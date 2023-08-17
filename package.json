@@ -1,0 +1,37 @@
+{
+  "name": "alc_client",
+  "version": "0.1.0",
+  "description": "Artificial life coach (front-end)",
+  "private": true,
+  "engines": {
+    "node": "18.12.1"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^13.4.17",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roissi/ALC_client.git"
+  },
+  "keywords": [
+    "agenda",
+    "planning",
+    "OpenAI",
+    "GPT",
+    "Life coach",
+    "Panda.css"
+  ],
+  "author": "roissi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roissi/ALC_client/issues"
+  }
+}
