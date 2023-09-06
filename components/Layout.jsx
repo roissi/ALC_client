@@ -9,7 +9,7 @@ export default function Layout({ children }) {
   return (
     <Box bg="secondary" minH="100vh">
       <Flex as="header" bg="primary" color="white" p={4} justify="space-between" align="center">
-        <Heading size="md">Artificial Life Coach</Heading>
+        <Heading size="lg">Artificial Life Coach</Heading>
         <Flex>
           {!isLoggedIn ? (
         <>
@@ -20,8 +20,14 @@ export default function Layout({ children }) {
         </>
       ) : (
         <>
-          <Avatar name="User name" src="url-to-generic-profile-image" mr={4} />
-            <Button colorScheme="red" onClick={() => setIsLoggedIn(false)}>
+          <Avatar m={-2} alignSelf="center" src="url-to-generic-profile-image" mr={4} />
+            <Button 
+              bg="#ffcf25" 
+              color="black" 
+              _hover={{ bg: "#ffc107" }} 
+              _active={{ bg: "#ffc107" }}
+              onClick={() => setIsLoggedIn(false)}
+            >
               Logout
             </Button>
         </>

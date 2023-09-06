@@ -45,7 +45,13 @@ export default function LoginModal({ setIsLoggedIn }) {
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpen}>
+      <Button 
+        bg="white" 
+        color="black" 
+        _hover={{ bg: "#ffc107" }} 
+        _active={{ bg: "#ffc107" }}
+        onClick={onOpen}
+      >
         Login
       </Button>
 
@@ -58,20 +64,35 @@ export default function LoginModal({ setIsLoggedIn }) {
             {errorMessage && <Text color="red.500">{errorMessage}</Text>} {/* Affichage du message d'erreur */}
             <FormControl id="username">
               <FormLabel>Username</FormLabel>
-              <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+              <Input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                variant="filled"
+                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
+              />
             </FormControl>
 
             <FormControl mt={4} id="password">
               <FormLabel>Password</FormLabel>
-              <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                variant="filled"
+                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
+              />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button colorScheme="teal" onClick={handleSubmit}>
+          <Button 
+              bg="#ffcf25" 
+              color="black" 
+              _hover={{ bg: "#ffc107" }} 
+              _active={{ bg: "#ffc107" }}
+              onClick={handleSubmit}
+            >
               Login
             </Button>
           </ModalFooter>

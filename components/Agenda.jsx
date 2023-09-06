@@ -1,4 +1,4 @@
-import { Box, Text, Textarea } from "@chakra-ui/react";
+import { Box, Text, Textarea, Heading } from "@chakra-ui/react";
 
 const Agenda = () => {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -9,7 +9,8 @@ const Agenda = () => {
   };
 
   return (
-    <Box bg="tertiary" color="white" borderColor="white" p={4} borderRadius="10px">
+    <Box bg="tertiary" color="white" borderColor="white" m={4} p={4} borderRadius="10px">
+
       <Box display="flex" mb={2}>
         <Box width="70px" bg="tertiary" p={2} ml={2}></Box>
         {days.map((day, idx) => (
