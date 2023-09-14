@@ -15,9 +15,11 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useAuth } from './Layout';  // Importer le hook useAuth
 
-export default function LoginModal({ setIsLoggedIn }) {
+export default function LoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { setIsLoggedIn } = useAuth();  // Utiliser le hook useAuth pour obtenir setIsLoggedIn
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -30,10 +32,10 @@ export default function LoginModal({ setIsLoggedIn }) {
     
     const userData = { username, password };
     try {
-      const response = await login(userData);  // Utilisez la fonction login de api.js
+      const response = await login(userData);
       if (response.token) {
         localStorage.setItem("jwtToken", response.token);
-        setIsLoggedIn(true);
+        setIsLoggedIn(true);  // Utiliser setIsLoggedIn depuis le contexte
         onClose();
       } else {
         setErrorMessage("Échec de la connexion : " + response.message);
@@ -61,7 +63,7 @@ export default function LoginModal({ setIsLoggedIn }) {
           <ModalHeader>Login</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {errorMessage && <Text color="red.500">{errorMessage}</Text>} {/* Affichage du message d'erreur */}
+            {errorMessage && <Text color="red.500">{errorMessage}</Text>}
             <FormControl id="username">
               <FormLabel>Username</FormLabel>
               <Input
@@ -69,7 +71,6 @@ export default function LoginModal({ setIsLoggedIn }) {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 variant="filled"
-                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
               />
             </FormControl>
 
@@ -80,13 +81,12 @@ export default function LoginModal({ setIsLoggedIn }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 variant="filled"
-                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
               />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-          <Button 
+            <Button 
               bg="#ffcf25" 
               color="black" 
               _hover={{ bg: "#ffc107" }} 
