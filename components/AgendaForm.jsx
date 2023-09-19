@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button, Input } from "@chakra-ui/react";
 
 const AgendaForm = ({ day, hour, onEntryCreated }) => {  // Suppression de onEntrySuccessfullyAdded
   const [title, setTitle] = useState('');
@@ -6,7 +7,6 @@ const AgendaForm = ({ day, hour, onEntryCreated }) => {  // Suppression de onEnt
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('handleSubmit called');
     const newEntry = {
       title,
       description,
@@ -19,22 +19,41 @@ const AgendaForm = ({ day, hour, onEntryCreated }) => {  // Suppression de onEnt
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <button type="submit">Add Entry</button>
-    </form>
-  );
+<form onSubmit={handleSubmit}>
+  <Input
+    type="text"
+    placeholder="Title"
+    value={title}
+    onChange={(e) => setTitle(e.target.value)}
+    bg="#424552"
+    color="white"
+    border="none"
+    outline="none"
+    focusBorderColor="#ffc107"
+  />
+  <Input
+    type="text"
+    placeholder="Description"
+    value={description}
+    onChange={(e) => setDescription(e.target.value)}
+    bg="#424552"
+    color="white"
+    border="none"
+    outline="none"
+    focusBorderColor="#ffc107"
+  />
+  <Button 
+    type="submit"
+    bg="#ffcf25"
+    color="black"
+    _hover={{ bg: "#ffc107" }}
+    _active={{ bg: "#ffc107" }}
+    size="sm"
+    mt={2}>
+      Add or update entry
+  </Button>
+</form>
+);
 };
 
 export default AgendaForm;

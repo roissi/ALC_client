@@ -82,24 +82,37 @@ const Agenda = () => {
     }
   };
   
-  const updateAgendaEntries = (day, hour, newEntry) => {
-    setAgendaEntries(prevState => ({
-      ...prevState,
-      [`${day}-${hour}`]: newEntry
-    }));
+  const updateAgendaEntries = async (day, hour, newEntry, id, token) => {
+    const updatedEntry = {
+      day,
+      hour,
+      title: newEntry.title,
+      description: newEntry.description,
+      id  // Assurez-vous que cet ID est correct
+    };
+  
+    try {
+      await updateAgendaEntry(updatedEntry, token);  // Met à jour les données sur le serveur
+      setAgendaEntries(prevState => ({  // Met à jour l'état local
+        ...prevState,
+        [`${day}-${hour}`]: updatedEntry
+      }));
+    } catch (error) {
+      console.error("Could not update entry:", error);
+    }
   };
+
   
   const handleAgendaEntry = async (day, hour, entry) => {
     const token = localStorage.getItem('jwtToken');
     if (token) {
       const entryKey = `${day}-${hour}`;
       if (agendaEntries.hasOwnProperty(entryKey)) {
-        await updateAgendaEntry(day, hour, entry, token);
+        const id = agendaEntries[entryKey].id;
+        await updateAgendaEntries(day, hour, entry, id, token);
       } else {
         await addAgendaEntry(day, hour, entry, token);
       }
-      // Mettre à jour l'état ici
-      updateAgendaEntries(day, hour, entry);
     }
   };
 
