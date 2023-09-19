@@ -11,9 +11,13 @@ const api = axios.create({
 });
 
 // Fonction pour récupérer les en-têtes d'autorisation
-const getAuthHeaders = () => ({
-  'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
-});
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('jwtToken');
+  console.log("Token utilisé:", token);
+  return {
+    'Authorization': `Bearer ${token}`
+  };
+};
 
 // Fonction pour gérer les erreurs
 const handleApiError = (error) => {
@@ -68,13 +72,48 @@ export const fetchAgendaEntries = async () => api.get('/api/agenda-entry', { hea
   .then(res => res.data)
   .catch(handleApiError);
 
+
 export const updateAgendaEntry = async (entryData) => {
-  if (!entryData.day || !entryData.hour || !entryData.id) throw new Error('Day, hour, and ID are required for updating');
+  if (!entryData.day || !entryData.hour || !entryData.id) {
+  throw new Error('Day, hour, and ID are required for updating');
+    }
   return api.put(`/api/agenda-entry/${entryData.id}`, entryData, { headers: getAuthHeaders() })
     .then(res => res.data)
     .catch(handleApiError);
 };
-
+  
 export const deleteAgendaEntry = async (id) => api.delete(`/api/agenda-entry/${id}`, { headers: getAuthHeaders() })
   .then(res => res.data)
   .catch(handleApiError);
+
+export const fetchAllInterestsAndNeeds = async () => {
+  return api.get('/api/interests', { headers: getAuthHeaders() })
+    .then(res => {
+      console.log("API Response:", res.data);  // Ajouté ici
+      return res.data;
+    })
+    .catch(error => {
+      console.log("API Error:", error);  // Ajouté ici
+      handleApiError(error);
+    });
+};
+
+export const saveUserInterests = async (interestData, selectedNeedsWithDuration) => {
+  console.log("Envoi des intérêts et besoins à l'API:", interestData, selectedNeedsWithDuration);
+  const payload = {
+    interests: interestData,
+    needsWithDuration: selectedNeedsWithDuration
+  };
+
+  console.log("Payload complet:", payload); // Nouveau log pour vérifier le payload complet
+  
+  return api.post('/api/user-interests', payload, { headers: getAuthHeaders() })
+  .then(res => {
+    console.log("Réponse de l'API:", res.data); // Nouveau log pour afficher la réponse de l'API
+    return res.data;
+  })
+  .catch(error => {
+    console.log("Erreur lors de l'appel à l'API:", error); // Nouveau log pour afficher l'erreur
+    handleApiError(error);
+  });
+};

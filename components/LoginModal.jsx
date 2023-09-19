@@ -71,6 +71,7 @@ export default function LoginModal() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 variant="filled"
+                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
               />
             </FormControl>
 
@@ -81,6 +82,7 @@ export default function LoginModal() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 variant="filled"
+                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
               />
             </FormControl>
           </ModalBody>
