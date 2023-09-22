@@ -19,7 +19,7 @@ import { useAuth } from './Layout';  // Importer le hook useAuth
 
 export default function LoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { setIsLoggedIn } = useAuth();  // Utiliser le hook useAuth pour obtenir setIsLoggedIn
+  const { setIsLoggedIn, setUserId } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,7 +35,8 @@ export default function LoginModal() {
       const response = await login(userData);
       if (response.token) {
         localStorage.setItem("jwtToken", response.token);
-        setIsLoggedIn(true);  // Utiliser setIsLoggedIn depuis le contexte
+        setIsLoggedIn(true);
+        setUserId(response.userId);
         onClose();
       } else {
         setErrorMessage("Échec de la connexion : " + response.message);

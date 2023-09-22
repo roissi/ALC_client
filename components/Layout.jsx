@@ -12,6 +12,7 @@ export function useAuth() {
 
 export default function Layout({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -23,6 +24,8 @@ export default function Layout({ children }) {
   const authValue = {
     isLoggedIn,
     setIsLoggedIn,
+    userId,  // Ajout de userId ici
+    setUserId
   };
 
   return (
@@ -41,7 +44,7 @@ export default function Layout({ children }) {
             {!isLoggedIn ? (
               <>
             <Box mr={4}>
-              <SignUpModal setIsLoggedIn={setIsLoggedIn} />
+              <SignUpModal setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />
             </Box>
                 <LoginModal />
               </>
@@ -55,6 +58,7 @@ export default function Layout({ children }) {
                   _active={{ bg: "#ffc107" }}
                   onClick={() => {
                     setIsLoggedIn(false);
+                    setUserId(null); // Réinitialisation de userId lors de la déconnexion
                     localStorage.removeItem("jwtToken"); // Effacer le token
                   }}
                 >
@@ -65,7 +69,7 @@ export default function Layout({ children }) {
           </Flex>
         </Flex>
         <Box as="main" p={4}>
-          {React.cloneElement(children, { isLoggedIn })}
+          {React.cloneElement(children, { isLoggedIn, userId })}
         </Box>
         <Flex as="footer" bg="quaternary" p={4}>
           <Text fontSize="sm">&copy; roissi / 2023</Text>
