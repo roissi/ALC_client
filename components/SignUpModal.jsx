@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-export default function SignUpModal({ setIsLoggedIn }) {
+export default function SignUpModal({ setIsLoggedIn, setUserId }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -32,10 +32,12 @@ export default function SignUpModal({ setIsLoggedIn }) {
     }
     const userData = { username, email, password };
     try {
-      const response = await signUp(userData); // Utilisez la fonction signUp de api.js
+      const response = await signUp(userData);
+
       if (response.token) {
         localStorage.setItem("jwtToken", response.token);
         setIsLoggedIn(true);
+        setUserId(response.userId)
         setIsConnected(true);
         onClose();
       } 

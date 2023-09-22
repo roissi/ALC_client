@@ -1,22 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Heading, Flex, CheckboxGroup, Checkbox, Input, Button, Stack, Text, Grid } from '@chakra-ui/react';
-import { fetchAllInterestsAndNeeds, saveUserInterests } from '../services/api';
+import { Box, Heading, Flex, CheckboxGroup, Checkbox, Input, Button, Stack, Text, Grid, CloseButton, useToast } from '@chakra-ui/react';
+import {
+  fetchAllInterestsAndNeeds,
+  saveUserInterests,
+  getUserInterests,
+  updateUserInterests,
+  deleteUserInterests
+} from '../services/api';
 import { useAuth } from './Layout';
 
 const Interests = () => {
+  const toast = useToast();
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [selectedNeedsMap, setSelectedNeedsMap] = useState({});
   const [selectedNeedsWithDuration, setSelectedNeedsWithDuration] = useState([]);
   const [allInterests, setAllInterests] = useState([]);
   const [allNeeds, setAllNeeds] = useState([]);
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, userId } = useAuth();
+ 
+  const [choicesMade, setChoicesMade] = useState(false);
 
   useEffect(() => {
     const fetchAllData = async () => {
-      const allData = await fetchAllInterestsAndNeeds();
-      if (allData) {
-        setAllInterests(allData.filter(d => d.type === 'Interest'));
-        setAllNeeds(allData.filter(d => d.type === 'Need'));
+      try {
+        const allData = await fetchAllInterestsAndNeeds();
+        if (allData) {
+          setAllInterests(allData.filter(d => d.type === 'Interest'));
+          setAllNeeds(allData.filter(d => d.type === 'Need'));
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données", error);
       }
     };
 
@@ -24,6 +37,39 @@ const Interests = () => {
       fetchAllData();
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userChoices = await getUserInterests(userId);
+        const interests = userChoices.filter(choice => choice.is_permanent === true);
+        const needs = userChoices.filter(choice => choice.is_permanent === false);
+
+        if (userChoices.length > 0) {
+          setSelectedInterests(interests.map(interest => interest.interest_id));
+          setSelectedNeedsWithDuration(needs.map(need => ({ need: need.interest_id, duration: need.duration })));
+  
+          // Mise à jour de selectedNeedsMap
+          const newSelectedNeedsMap = {};
+          needs.forEach((need) => {
+            newSelectedNeedsMap[need.interest_id] = true; // Assurez-vous que c'est la bonne clé
+          });
+          setSelectedNeedsMap(newSelectedNeedsMap);
+  
+          setChoicesMade(true);
+        } else {
+          setChoicesMade(false);
+        }
+      } catch (error) {
+        console.error('Une erreur s\'est produite lors de la récupération des intérêts :', error);
+      }
+    };
+  
+    if (isLoggedIn && userId) {
+      fetchData();
+    } else {
+    }
+  }, [isLoggedIn, userId]);
 
   const handleInterestsChange = (values) => {
     setSelectedInterests(values.map(v => parseInt(v, 10)));
@@ -33,9 +79,9 @@ const Interests = () => {
     setSelectedNeedsMap(prev => {
       const updatedMap = { ...prev, [needId]: !prev[needId] };
       if (updatedMap[needId]) {
-        setSelectedNeedsWithDuration([...selectedNeedsWithDuration, { need: parseInt(needId, 10), duration: 0 }]);
+        setSelectedNeedsWithDuration([{ need: parseInt(needId, 10), duration: 0 }]);
       } else {
-        setSelectedNeedsWithDuration(selectedNeedsWithDuration.filter(item => item.need !== parseInt(needId, 10)));
+        setSelectedNeedsWithDuration([]);
       }
       return updatedMap;
     });
@@ -44,22 +90,58 @@ const Interests = () => {
   const handleDurationChange = (needId, duration) => {
     const parsedDuration = parseInt(duration, 10);
     if (isNaN(parsedDuration) || parsedDuration <= 0) return;
-    setSelectedNeedsWithDuration(prev => {
-      return prev.map(item => item.need === parseInt(needId, 10) ? { ...item, duration: parsedDuration } : item);
-    });
+    setSelectedNeedsWithDuration([{ need: parseInt(needId, 10), duration: parsedDuration }]);
   };
 
-  const validateChoices = () => {
+  const validateChoices = async () => {
     if (selectedInterests.length === 0 || selectedNeedsWithDuration.length === 0) {
-      alert("Veuillez sélectionner au moins un intérêt et un besoin.");
+      toast({
+        duration: 6000,
+        position: "top-right",
+        isClosable: true,
+        render: ({ onClose }) => (
+          <Box color="white" p={3} bg="#b63333" borderRadius="md">
+            <Text color="white">ERREUR :</Text>
+            <Text color="white">Veuillez sélectionner au moins un intérêt et un besoin.</Text>
+            <CloseButton onClick={onClose} />
+          </Box>
+        )
+      });
       return;
     }
-    saveUserInterests(selectedInterests, selectedNeedsWithDuration)
-      .then(response => console.log("Data saved successfully", response))
-      .catch(error => console.log("Error saving data", error));
+    try {
+      const response = await saveUserInterests(selectedInterests, selectedNeedsWithDuration);
+      setChoicesMade(true);
+      toast({
+        duration: 6000,
+        position: "top-right",
+        isClosable: true,
+        render: ({ onClose }) => (
+          <Box color="black" p={3} bg="#ffc107" borderRadius="md">
+            <Text color="black">SÉLECTION EFFECTUÉE AVEC SUCCÈS :</Text>
+            <Text color="black">Vos choix ont bien été enregistrés et sont transmis au coach.</Text>
+            <CloseButton onClick={onClose} />
+          </Box>
+        )
+      });
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement des données", error);
+      toast({
+        duration: 6000,
+        position: "top-right",
+        isClosable: true,
+        render: ({ onClose }) => (
+          <Box color="white" p={3} bg="#b63333" borderRadius="md">
+            <Text color="white">AH, PROBLÈME :</Text>
+            <Text color="white">Une erreur s'est produite lors de l'enregistrement de vos choix.</Text>
+            <CloseButton onClick={onClose} />
+          </Box>
+        )
+      });
+    }
   };
 
-  return (
+return (
     <Box bg="secondary" color="white" m={4} p={4} borderRadius="10px">
       <Grid templateColumns="1fr 1fr" gap={8} bg="#343440" p={3} borderRadius="10px">
         <Box bg="tertiary" p={8} borderRadius="10px">
@@ -113,19 +195,28 @@ const Interests = () => {
                       />
                       <Text fontSize="lg" ml={2}>{need.name}</Text>
                     </Flex>
-                      {selectedNeedsMap[need.id] && (
-                        <Input
-                          type="number"
-                          placeholder="Duration in days"
-                          border="none"
-                          outline="none"
-                          boxShadow="none"
-                          focusBorderColor="#ffc107"
-                          minWidth="80x"
-                          mt={2}
-                          onChange={e => handleDurationChange(need.id, e.target.value)}
-                        />
-                      )}
+                    {selectedNeedsMap[need.id] && (
+  <Flex direction="row" alignItems="baseline" mt={2}>
+    {choicesMade && (
+      <Text ml={2} style={{ whiteSpace: 'nowrap' }}>
+      {
+        selectedNeedsWithDuration.find(item => item.need === need.id)?.duration || 'Not set'
+      } days
+      </Text>
+    )}
+    <Input
+      type="number"
+      placeholder="Duration in days"
+      border="none"
+      outline="none"
+      boxShadow="none"
+      focusBorderColor="#ffc107"
+      minWidth="80px"
+      ml={4}  // Ajout d'une marge à gauche pour séparer le texte et l'input
+      onChange={e => handleDurationChange(need.id, e.target.value)}
+    />
+  </Flex>
+)}
                   </Flex>
                 </Flex>
               ))}
@@ -135,9 +226,21 @@ const Interests = () => {
       </Grid>
 
       <Box bg="secondary" color="white" m={4} p={4} borderRadius="10px">
-    <Button colorScheme="yellow" onClick={validateChoices}>Validate my choices</Button>
-  </Box>
-
+        {choicesMade ? (
+          <Flex direction="row" justifyContent="flex-start">
+          <Button colorScheme="yellow" onClick={async () => { await updateUserInterests(userId, selectedInterests, selectedNeedsWithDuration); setChoicesMade(true); 
+          }}>Change my choices</Button>
+          <Button colorScheme="yellow" ml={4} onClick={async () => { await deleteUserInterests(userId); 
+          setSelectedInterests([]);
+          setSelectedNeedsMap({});
+          setSelectedNeedsWithDuration([]);
+          setChoicesMade(false); 
+          }}>Reset my choices</Button>
+        </Flex>
+        ) : (
+          <Button colorScheme="yellow" onClick={validateChoices}>Validate my choices</Button>
+        )}
+      </Box>
     </Box>
   );
 };
