@@ -15,7 +15,11 @@ import {
   Input,
   Text,
   useDisclosure,
+  useToast,
+  Box,
+  CloseButton
 } from "@chakra-ui/react";
+import { TOAST_MESSAGES } from './toastMessages';
 
 export default function SignUpModal({ setIsLoggedIn, setUserId }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,6 +28,8 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
   const [password, setPassword] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const toast = useToast();
 
   const handleSubmit = async () => {
     if (username === "" || email === "" || password === "") {
@@ -37,10 +43,21 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
       if (response.token) {
         localStorage.setItem("jwtToken", response.token);
         setIsLoggedIn(true);
-        setUserId(response.userId)
+        setUserId(response.userId);
         setIsConnected(true);
-        onClose();
-      } 
+        toast({
+          duration: 6000,
+          position: "top-right",
+          isClosable: true,
+          render: ({ onClose }) => (
+            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
+              <Text color="black" fontSize="xl">{TOAST_MESSAGES.signup.title}</Text>
+              <Text color="black" fontSize="lg">{TOAST_MESSAGES.signup.description}</Text>
+              <CloseButton onClick={onClose} />
+            </Box>
+          ),
+        });
+      }
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setErrorMessage("Erreur côté client : " + error.response.data.error);
@@ -51,8 +68,8 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
       }
     }
   };
-
-  return (
+  
+    return (
     <>
       {isConnected ? (
         <div style={{ display: "flex", alignItems: "center" }}>

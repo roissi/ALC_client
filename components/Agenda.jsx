@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import jwt_decode from 'jwt-decode'; // Ajoutez cette ligne pour utiliser jwt-decode
+import jwt_decode from 'jwt-decode';
 import AgendaForm from './AgendaForm';
 import AgendaEntry from './AgendaEntry';
-import { Box, Text, Textarea, Button } from "@chakra-ui/react";
+import { Box, Text, useToast, CloseButton } from "@chakra-ui/react";
 import { createAgendaEntry, fetchAgendaEntries, updateAgendaEntry, deleteAgendaEntry } from '../services/api';
-import { useAuth } from './Layout';  // Importer le hook useAuth
+import { useAuth } from './Layout';
+import { TOAST_MESSAGES } from './toastMessages';
 
 const Agenda = () => {
+  const toast = useToast();
   const { isLoggedIn } = useAuth();
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const hours = Array.from({ length: 12 }, (_, i) => i + 8);
   
   const [selectedCell, setSelectedCell] = useState(null);
   const [agendaEntries, setAgendaEntries] = useState({});
+  const [firstEntryAdded, setFirstEntryAdded] = useState(false);
 
   useEffect(() => {
     const initAgenda = async () => {
@@ -77,6 +80,22 @@ const Agenda = () => {
     try {
       await createAgendaEntry(newEntry, token);
       refreshAgendaEntries();
+      if (!firstEntryAdded) {
+        toast({
+          duration: 6000,
+          position: "top-right",
+          isClosable: true,
+          render: ({ onClose }) => (
+            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
+              <Text color="black" fontSize="xl">{TOAST_MESSAGES.entry.title}</Text>
+              <Text color="black" fontSize="lg">{TOAST_MESSAGES.entry.description}</Text>
+              <CloseButton onClick={onClose} />
+            </Box>
+          ),
+        });
+        setFirstEntryAdded(true);  // Mettez l'état à true
+      }
+  
     } catch (error) {
       console.error("Could not add entry:", error);
     }

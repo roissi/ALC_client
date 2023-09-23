@@ -3,7 +3,6 @@ import { Box, Heading, Text, Flex, Button, Avatar } from "@chakra-ui/react";
 import SignUpModal from "./SignUpModal";
 import LoginModal from "./LoginModal";
 
-// Création du Context pour l'authentification
 export const AuthContext = createContext();
 
 export function useAuth() {
@@ -24,7 +23,7 @@ export default function Layout({ children }) {
   const authValue = {
     isLoggedIn,
     setIsLoggedIn,
-    userId,  // Ajout de userId ici
+    userId,
     setUserId
   };
 
@@ -58,8 +57,8 @@ export default function Layout({ children }) {
                   _active={{ bg: "#ffc107" }}
                   onClick={() => {
                     setIsLoggedIn(false);
-                    setUserId(null); // Réinitialisation de userId lors de la déconnexion
-                    localStorage.removeItem("jwtToken"); // Effacer le token
+                    setUserId(null);
+                    localStorage.removeItem("jwtToken");
                   }}
                 >
                   Logout

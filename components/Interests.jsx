@@ -8,6 +8,7 @@ import {
   deleteUserInterests
 } from '../services/api';
 import { useAuth } from './Layout';
+import { TOAST_MESSAGES } from './toastMessages';
 
 const Interests = () => {
   const toast = useToast();
@@ -101,8 +102,8 @@ const Interests = () => {
         isClosable: true,
         render: ({ onClose }) => (
           <Box color="white" p={3} bg="#b63333" borderRadius="md">
-            <Text color="white">ERREUR :</Text>
-            <Text color="white">Veuillez sélectionner au moins un intérêt et un besoin.</Text>
+            <Text color="white" fontSize="xl">{TOAST_MESSAGES.error.title}</Text>
+            <Text color="white" fontSize="lg">{TOAST_MESSAGES.error.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -118,8 +119,8 @@ const Interests = () => {
         isClosable: true,
         render: ({ onClose }) => (
           <Box color="black" p={3} bg="#ffc107" borderRadius="md">
-            <Text color="black">SÉLECTION EFFECTUÉE AVEC SUCCÈS :</Text>
-            <Text color="black">Vos choix ont bien été enregistrés et sont transmis au coach.</Text>
+            <Text color="black" fontSize="xl">{TOAST_MESSAGES.success.title}</Text>
+            <Text color="black" fontSize="lg">{TOAST_MESSAGES.success.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -132,8 +133,8 @@ const Interests = () => {
         isClosable: true,
         render: ({ onClose }) => (
           <Box color="white" p={3} bg="#b63333" borderRadius="md">
-            <Text color="white">AH, PROBLÈME :</Text>
-            <Text color="white">Une erreur s'est produite lors de l'enregistrement de vos choix.</Text>
+            <Text color="white" fontSize="xl">{TOAST_MESSAGES.problem.title}</Text>
+            <Text color="white" fontSize="lg">{TOAST_MESSAGES.problem.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -196,29 +197,27 @@ return (
                       <Text fontSize="lg" ml={2}>{need.name}</Text>
                     </Flex>
                     {selectedNeedsMap[need.id] && (
-  <Flex direction="row" alignItems="baseline" mt={2}>
-    {choicesMade && (
-      <Text ml={2} style={{ whiteSpace: 'nowrap' }}>
-      {
-        selectedNeedsWithDuration.find(item => item.need === need.id)?.duration || 'Not set'
-      } days
-      </Text>
-    )}
-    <Input
-      type="number"
-      placeholder="Duration in days"
-      border="none"
-      outline="none"
-      boxShadow="none"
-      focusBorderColor="#ffc107"
-      minWidth="80px"
-      ml={4}  // Ajout d'une marge à gauche pour séparer le texte et l'input
-      onChange={e => handleDurationChange(need.id, e.target.value)}
-    />
-  </Flex>
-)}
-                  </Flex>
+                <Flex direction="row" alignItems="baseline" mt={2}>
+                  {choicesMade && (
+                  <Text ml={2} style={{ whiteSpace: 'nowrap' }}>
+                  { selectedNeedsWithDuration.find(item => item.need === need.id)?.duration || 'Not set' } days
+                  </Text>
+                  )}
+                    <Input
+                      type="number"
+                      placeholder="Duration in days"
+                      border="none"
+                      outline="none"
+                      boxShadow="none"
+                      focusBorderColor="#ffc107"
+                      minWidth="80px"
+                      ml={4}
+                      onChange={e => handleDurationChange(need.id, e.target.value)}
+                    />
                 </Flex>
+                )}
+                </Flex>
+              </Flex>
               ))}
             </Stack>
           </CheckboxGroup>
@@ -229,13 +228,40 @@ return (
         {choicesMade ? (
           <Flex direction="row" justifyContent="flex-start">
           <Button colorScheme="yellow" onClick={async () => { await updateUserInterests(userId, selectedInterests, selectedNeedsWithDuration); setChoicesMade(true); 
-          }}>Change my choices</Button>
+          toast({
+            duration: 6000,
+            position: "top-right",
+            isClosable: true,
+          render: ({ onClose }) => (
+            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
+              <Text color="black">{TOAST_MESSAGES.updated.title}</Text>
+              <Text color="black">{TOAST_MESSAGES.updated.description}</Text>
+              <CloseButton onClick={onClose} />
+            </Box>
+            )
+          });
+        }}
+          >Change my choices
+          </Button>
           <Button colorScheme="yellow" ml={4} onClick={async () => { await deleteUserInterests(userId); 
           setSelectedInterests([]);
           setSelectedNeedsMap({});
           setSelectedNeedsWithDuration([]);
           setChoicesMade(false); 
-          }}>Reset my choices</Button>
+          toast({
+            duration: 6000,
+            position: "top-right",
+            isClosable: true,
+          render: ({ onClose }) => (
+            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
+              <Text color="black">{TOAST_MESSAGES.deleted.title}</Text>
+              <Text color="black">{TOAST_MESSAGES.deleted.description}</Text>
+              <CloseButton onClick={onClose} />
+            </Box>
+            )
+          });
+        }}
+          >Reset my choices</Button>
         </Flex>
         ) : (
           <Button colorScheme="yellow" onClick={validateChoices}>Validate my choices</Button>
