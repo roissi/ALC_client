@@ -14,8 +14,12 @@ import {
   Input,
   Text,
   useDisclosure,
+  useToast,
+  Box,
+  CloseButton
 } from "@chakra-ui/react";
-import { useAuth } from './Layout';  // Importer le hook useAuth
+import { useAuth } from './Layout';
+import { TOAST_MESSAGES } from './toastMessages';
 
 export default function LoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,6 +27,8 @@ export default function LoginModal() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const toast = useToast();
 
   const handleSubmit = async () => {
     if (username === "" || password === "") {
@@ -37,7 +43,18 @@ export default function LoginModal() {
         localStorage.setItem("jwtToken", response.token);
         setIsLoggedIn(true);
         setUserId(response.userId);
-        onClose();
+        toast({
+          duration: 6000,
+          position: "top-right",
+          isClosable: true,
+          render: ({ onClose }) => (
+            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
+              <Text color="black" fontSize="xl">{TOAST_MESSAGES.login.title}</Text>
+              <Text color="black" fontSize="lg">{TOAST_MESSAGES.login.description}</Text>
+              <CloseButton onClick={onClose} />
+            </Box>
+          ),
+        });
       } else {
         setErrorMessage("Échec de la connexion : " + response.message);
       }
