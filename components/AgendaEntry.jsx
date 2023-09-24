@@ -1,7 +1,7 @@
 import React from 'react';
-import { Textarea, Button, Box } from '@chakra-ui/react';
+import { Textarea, Button } from '@chakra-ui/react';
 
-const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry }) => {
+const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
   const entryKey = `${day}-${hour}`;
   const entry = agendaEntries[entryKey];
 
@@ -46,7 +46,8 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry }) => {
           bg="transparent"
           border="1px solid white" 
           color="white" 
-          size="sm" 
+          size="sm"
+          isDisabled={!isEditable}
           onClick={() => deleteEntry(day, hour)}
         >
         Delete

@@ -10,12 +10,17 @@ import { TOAST_MESSAGES } from './toastMessages';
 const Agenda = () => {
   const toast = useToast();
   const { isLoggedIn } = useAuth();
+  const [isEditable, setIsEditable] = useState(isLoggedIn);
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const hours = Array.from({ length: 12 }, (_, i) => i + 8);
   
   const [selectedCell, setSelectedCell] = useState(null);
   const [agendaEntries, setAgendaEntries] = useState({});
   const [firstEntryAdded, setFirstEntryAdded] = useState(false);
+
+  useEffect(() => {
+    setIsEditable(isLoggedIn);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const initAgenda = async () => {
@@ -182,6 +187,7 @@ const Agenda = () => {
                   day={selectedCell.day} 
                   hour={selectedCell.hour} 
                   onEntryCreated={(newEntry) => handleAgendaEntry(newEntry.day, newEntry.hour, newEntry)}
+                  isEditable={isEditable}
                 />
               ) : (
                 <AgendaEntry 
@@ -189,6 +195,7 @@ const Agenda = () => {
                   hour={hour} 
                   agendaEntries={agendaEntries} 
                   deleteEntry={deleteEntry} 
+                  isEditable={isEditable}
                 />
               )}
             </Box>

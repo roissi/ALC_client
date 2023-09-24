@@ -18,13 +18,19 @@ const Interests = () => {
   const [allInterests, setAllInterests] = useState([]);
   const [allNeeds, setAllNeeds] = useState([]);
   const { isLoggedIn, userId } = useAuth();
- 
+  const [isEditable, setIsEditable] = useState(false);
   const [choicesMade, setChoicesMade] = useState(false);
+
+  useEffect(() => {
+    setIsEditable(isLoggedIn);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const fetchAllData = async () => {
       try {
+        console.log("fetchAllData est appelé");
         const allData = await fetchAllInterestsAndNeeds();
+        console.log("Données récupérées:", allData);
         if (allData) {
           setAllInterests(allData.filter(d => d.type === 'Interest'));
           setAllNeeds(allData.filter(d => d.type === 'Need'));
@@ -34,9 +40,9 @@ const Interests = () => {
       }
     };
 
-    if (isLoggedIn) {
+    // if (isLoggedIn) {
       fetchAllData();
-    }
+    // }
   }, [isLoggedIn]);
 
   useEffect(() => {
@@ -155,6 +161,7 @@ return (
               <Flex alignItems="center" key={"interest-" + index}>
                 <Checkbox
                   value={interest.id}
+                  isDisabled={!isLoggedIn}
                   __css={{
                 '.chakra-checkbox__control': {
                     _checked: {
@@ -183,6 +190,7 @@ return (
                     <Flex alignItems="center">
                       <Checkbox
                         value={need.id.toString()}
+                        isDisabled={!isLoggedIn}
                         __css={{
                           '.chakra-checkbox__control': {
                             _checked: {
@@ -234,8 +242,8 @@ return (
             isClosable: true,
           render: ({ onClose }) => (
             <Box color="black" p={3} bg="#ffc107" borderRadius="md">
-              <Text color="black">{TOAST_MESSAGES.updated.title}</Text>
-              <Text color="black">{TOAST_MESSAGES.updated.description}</Text>
+              <Text color="black" fontSize="xl">{TOAST_MESSAGES.updated.title}</Text>
+              <Text color="black" fontSize="lg">{TOAST_MESSAGES.updated.description}</Text>
               <CloseButton onClick={onClose} />
             </Box>
             )
@@ -264,7 +272,7 @@ return (
           >Reset my choices</Button>
         </Flex>
         ) : (
-          <Button colorScheme="yellow" onClick={validateChoices}>Validate my choices</Button>
+          <Button colorScheme="yellow" onClick={validateChoices} isDisabled={!isEditable}>Validate my choices</Button>
         )}
       </Box>
     </Box>

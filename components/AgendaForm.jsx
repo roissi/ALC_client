@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Input } from "@chakra-ui/react";
 
-const AgendaForm = ({ day, hour, onEntryCreated }) => {  // Suppression de onEntrySuccessfullyAdded
+const AgendaForm = ({ day, hour, onEntryCreated, isEditable }) => {  // Suppression de onEntrySuccessfullyAdded
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -30,6 +30,7 @@ const AgendaForm = ({ day, hour, onEntryCreated }) => {  // Suppression de onEnt
     border="none"
     outline="none"
     focusBorderColor="#ffc107"
+    isReadOnly={!isEditable}
   />
   <Input
     type="text"
@@ -41,6 +42,7 @@ const AgendaForm = ({ day, hour, onEntryCreated }) => {  // Suppression de onEnt
     border="none"
     outline="none"
     focusBorderColor="#ffc107"
+    isReadOnly={!isEditable}
   />
   <Button 
     type="submit"
@@ -49,7 +51,8 @@ const AgendaForm = ({ day, hour, onEntryCreated }) => {  // Suppression de onEnt
     _hover={{ bg: "#ffc107" }}
     _active={{ bg: "#ffc107" }}
     size="sm"
-    mt={2}>
+    mt={2}
+    isDisabled={!isEditable}>
       Add or update entry
   </Button>
 </form>
