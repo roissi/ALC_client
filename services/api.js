@@ -13,21 +13,29 @@ const api = axios.create({
 // Fonction pour récupérer les en-têtes d'autorisation
 const getAuthHeaders = () => {
   const token = localStorage.getItem('jwtToken');
-  console.log("Token utilisé:", token);
-  return {
-    'Authorization': `Bearer ${token}`
-  };
+  if (token) {
+    console.log("Token utilisé:", token);
+    return {
+      'Authorization': `Bearer ${token}`
+    };
+  }
+  return {};
 };
 
 // Fonction pour gérer les erreurs
 const handleApiError = (error) => {
+  console.log("API Error: ", error);
   throw error;
 };
 
 // Interception des erreurs 401
 api.interceptors.response.use(
-  response => response,
+  response => {
+    console.log("Intercepted response: ", response);
+    return response;
+  },
   error => {
+    console.log("Intercepted error: ", error);
     if (error.response?.status === 401) {
       localStorage.removeItem('jwtToken');
     }
@@ -85,15 +93,17 @@ export const deleteAgendaEntry = async (id) => api.delete(`/api/agenda-entry/${i
   .then(res => res.data)
   .catch(handleApiError);
 
-export const fetchAllInterestsAndNeeds = async () => {
-  return api.get('/api/interests', { headers: getAuthHeaders() })
-    .then(res => {
-      return res.data;
-    })
-    .catch(error => {
-      handleApiError(error);
-    });
-};
+  export const fetchAllInterestsAndNeeds = async () => {
+    console.log("Fetching all interests and needs...");
+    return api.get('/api/interests', { headers: getAuthHeaders() })  // Utilisez getAuthHeaders ici
+      .then(res => {
+        console.log("Data received: ", res.data);
+        return res.data;
+      })
+      .catch(error => {
+        handleApiError(error);
+      });
+  };
 
 export const saveUserInterests = async (interestData, selectedNeedsWithDuration) => {
   const payload = {
