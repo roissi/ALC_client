@@ -20,6 +20,7 @@ const Interests = () => {
   const { isLoggedIn, userId } = useAuth();
   const [isEditable, setIsEditable] = useState(false);
   const [choicesMade, setChoicesMade] = useState(false);
+  const { onOpen } = useAuth();
 
   useEffect(() => {
     setIsEditable(isLoggedIn);
@@ -161,7 +162,6 @@ return (
               <Flex alignItems="center" key={"interest-" + index}>
                 <Checkbox
                   value={interest.id}
-                  isDisabled={!isLoggedIn}
                   __css={{
                 '.chakra-checkbox__control': {
                     _checked: {
@@ -190,7 +190,6 @@ return (
                     <Flex alignItems="center">
                       <Checkbox
                         value={need.id.toString()}
-                        isDisabled={!isLoggedIn}
                         __css={{
                           '.chakra-checkbox__control': {
                             _checked: {
@@ -272,7 +271,23 @@ return (
           >Reset my choices</Button>
         </Flex>
         ) : (
-          <Button colorScheme="yellow" onClick={validateChoices} isDisabled={!isEditable}>Validate my choices</Button>
+<Button 
+  type="submit"
+  bg={isEditable ? "#ffcf25" : "grey"}
+  color="black"
+  _hover={{ bg: isEditable ? "#ffc107" : "grey" }}
+  _active={{ bg: isEditable ? "#ffc107" : "grey" }}
+  mt={2}
+  onClick={() => {
+    if (!isEditable) {
+      onOpen();
+      return;
+    }
+    validateChoices();
+  }}
+>
+  Validate my choices
+</Button>
         )}
       </Box>
     </Box>
