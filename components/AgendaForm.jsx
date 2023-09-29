@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { Button, Input } from "@chakra-ui/react";
+import { useAuth } from './Layout';
 
-const AgendaForm = ({ day, hour, onEntryCreated, isEditable }) => {  // Suppression de onEntrySuccessfullyAdded
+const AgendaForm = ({ day, hour, onEntryCreated, isEditable }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const { onOpen } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isEditable) {
+      onOpen();
+      return;
+    }
+
     const newEntry = {
       title,
       description,
@@ -14,7 +21,6 @@ const AgendaForm = ({ day, hour, onEntryCreated, isEditable }) => {  // Suppress
       hour
     };
     
-    // Informer le composant parent que l'entrée doit être créée ou mise à jour
     onEntryCreated(newEntry);
   };
 
@@ -30,7 +36,6 @@ const AgendaForm = ({ day, hour, onEntryCreated, isEditable }) => {  // Suppress
     border="none"
     outline="none"
     focusBorderColor="#ffc107"
-    isReadOnly={!isEditable}
   />
   <Input
     type="text"
@@ -42,18 +47,23 @@ const AgendaForm = ({ day, hour, onEntryCreated, isEditable }) => {  // Suppress
     border="none"
     outline="none"
     focusBorderColor="#ffc107"
-    isReadOnly={!isEditable}
   />
-  <Button 
-    type="submit"
-    bg="#ffcf25"
-    color="black"
-    _hover={{ bg: "#ffc107" }}
-    _active={{ bg: "#ffc107" }}
-    size="sm"
-    mt={2}
-    isDisabled={!isEditable}>
-      Add or update entry
+    <Button 
+      type="submit"
+      bg={isEditable ? "#ffcf25" : "grey"}
+      color="black"
+      _hover={{ bg: isEditable ? "#ffc107" : "grey" }}
+      _active={{ bg: isEditable ? "#ffc107" : "grey" }}
+      size="sm"
+      mt={2}
+      onClick={() => {
+        if (!isEditable) {
+          onOpen();
+        return;
+        }
+    }}
+  >
+        Add or update entry
   </Button>
 </form>
 );

@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Box, Heading, Text, Flex, Button, Avatar } from "@chakra-ui/react";
+import { Box, Heading, Link, Text, Flex, Button, Avatar, useDisclosure } from "@chakra-ui/react";
 import SignUpModal from "./SignUpModal";
 import LoginModal from "./LoginModal";
+import EntryModal from "./EntryModal";
 
 export const AuthContext = createContext();
 
@@ -12,6 +13,7 @@ export function useAuth() {
 export default function Layout({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure(); 
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -24,11 +26,14 @@ export default function Layout({ children }) {
     isLoggedIn,
     setIsLoggedIn,
     userId,
-    setUserId
+    setUserId,
+    onOpen,
+    onClose
   };
 
   return (
     <AuthContext.Provider value={authValue}>
+      <EntryModal isOpen={isOpen} onClose={onClose} />
       <Box bg="secondary" minH="100vh">
         <Flex
           as="header"
@@ -70,10 +75,21 @@ export default function Layout({ children }) {
         <Box as="main" p={4}>
           {React.cloneElement(children, { isLoggedIn, userId })}
         </Box>
-        <Flex as="footer" bg="quaternary" p={4}>
-          <Text fontSize="sm">&copy; roissi / 2023</Text>
-        </Flex>
-      </Box>
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            as="footer"
+            bg="quaternary"
+            p={4}
+            mx="auto"
+          >
+            <Link isExternal textDecoration="none" _hover={{ textDecoration: "none" }} color="black" mx={8}>À propos</Link>
+            <Link isExternal textDecoration="none" _hover={{ textDecoration: "none" }} color="black" mx={8}>Contacts</Link>
+            <Link isExternal textDecoration="none" _hover={{ textDecoration: "none" }} color="black" mx={8}>Mentions Légales</Link>
+            <Link isExternal textDecoration="none" _hover={{ textDecoration: "none" }} color="black" mx={8}>Politique de confidentialité</Link>
+            <Text fontSize="md" color="black">&copy; roissi / 2023</Text>
+          </Flex>
+        </Box>
     </AuthContext.Provider>
   );
 }

@@ -23,6 +23,10 @@ export const TOAST_MESSAGES = {
       title: 'CHOICES RESET',
       description: 'Your choices have been reset successfully. Please select again at least one interest and one need.'
     },
+    SugAdded: {
+      title: 'SUGGESTION ADDED',
+      description: 'The coach\'s suggestion has been added to your calendar.'
+    },
 
 
     error: {
@@ -32,5 +36,9 @@ export const TOAST_MESSAGES = {
     problem: {
       title: 'OUPS, BAD ISSUE',
       description: 'An error occurred while saving your choices.'
+    },
+    SugAddedError: {
+      title: 'OUPS, BAD ISSUE',
+      description: 'Error adding to calendar.'
     },
 };

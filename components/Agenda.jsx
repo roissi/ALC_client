@@ -52,7 +52,13 @@ const Agenda = () => {
     }
   }, [isLoggedIn]);
 
-  const formatHour = (hour) => hour < 12 ? `${hour}am` : `${hour - 12}pm`;
+  const DigitalClock = ({ hour }) => {
+    return (
+      <span style={{ fontFamily: 'Digital-7 Mono, monospace', fontSize: '1.2em' }}>
+        {hour < 12 ? `${hour}:00 AM` : `${hour - 12}:00 PM`}
+      </span>
+    );
+  };
 
   const handleCellClick = (day, hour) => {
     setSelectedCell({ day, hour });
@@ -98,7 +104,7 @@ const Agenda = () => {
             </Box>
           ),
         });
-        setFirstEntryAdded(true);  // Mettez l'état à true
+        setFirstEntryAdded(true);
       }
   
     } catch (error) {
@@ -112,12 +118,12 @@ const Agenda = () => {
       hour,
       title: newEntry.title,
       description: newEntry.description,
-      id  // Assurez-vous que cet ID est correct
+      id
     };
   
     try {
-      await updateAgendaEntry(updatedEntry, token);  // Met à jour les données sur le serveur
-      setAgendaEntries(prevState => ({  // Met à jour l'état local
+      await updateAgendaEntry(updatedEntry, token);
+      setAgendaEntries(prevState => ({
         ...prevState,
         [`${day}-${hour}`]: updatedEntry
       }));
@@ -161,14 +167,16 @@ const Agenda = () => {
         <Box width="70px" bg="tertiary" p={2} ml={2}></Box>
         {days.map((day, idx) => (
           <Box flex="1" bg="tertiary" p={2} key={idx} ml={1} borderRadius="md">
-            <Text color="white">{day}</Text>
+            <Text color="white" fontSize="xl">{day}</Text>
           </Box>
         ))}
       </Box>
       {hours.map((hour, idx) => (
         <Box display="flex" key={idx} mb={4}>
           <Box width="70px" bg="tertiary" p={2} borderRadius="md">
-            <Text color="white">{formatHour(hour)}</Text>
+            <Text color="white">
+              <DigitalClock hour={hour} />
+            </Text>
           </Box>
           {days.map((day, idx) => (
             <Box

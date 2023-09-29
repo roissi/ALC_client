@@ -141,3 +141,27 @@ export const deleteUserInterests = async (userId) => {
     .then(res => res.data)
     .catch(handleApiError);
 };
+
+// Fonction pour obtenir une suggestion du coach
+export const getSuggestionFromCoach = async (query) => {
+  return api.post('/api/suggestion/openai', { prompt: query }, { headers: getAuthHeaders() })
+    .then(res => res.data)
+    .catch(handleApiError);
+};
+
+// Fonction pour ajouter une entrée à l'agenda
+export const addToAgenda = async (agendaData) => {
+  try {
+    return await api.post('/api/agenda-entry', agendaData, { headers: getAuthHeaders() })
+      .then(res => res.data);
+  } catch (error) {
+    handleApiError(error);
+  }
+};
+
+// Fonction pour obtenir toutes les suggestions du coach pour un utilisateur
+export const getAllSuggestionsFromCoach = async (userId) => {
+  return api.get(`/api/suggestion/?userId=${userId}`, { headers: getAuthHeaders() })
+    .then(res => res.data)
+    .catch(handleApiError);
+};
