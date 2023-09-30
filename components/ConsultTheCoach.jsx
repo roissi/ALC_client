@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Textarea, Button, Spinner, Text, useToast, CloseButton } from '@chakra-ui/react';
+import { Select, Box, Textarea, Button, Spinner, Text, useToast, CloseButton } from '@chakra-ui/react';
 import { getSuggestionFromCoach, addToAgenda, getAllSuggestionsFromCoach } from '../services/api';
 import { useAuth } from './Layout';
 import { TOAST_MESSAGES } from './toastMessages';
@@ -8,19 +8,23 @@ const ConsultTheCoach = () => {
   const toast = useToast();
   const { isLoggedIn, userId, onOpen } = useAuth();
   const [query, setQuery] = useState('');
-  const [suggestion, setSuggestion] = useState(null);
+  const [suggestion, setSuggestion] = useState({ text: '', id: null });
   const [allSuggestions, setAllSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
-  const [agendaData, setAgendaData] = useState({ day: '', time: '' });
+  const [agendaData, setAgendaData] = useState({ day: '', hour: '' });
+
+  const [selectedDay, setSelectedDay] = useState('');
   
   useEffect(() => {
+    console.log("userId lors du montage du composant:", userId);
     setIsEditable(isLoggedIn);
   }, [isLoggedIn]);
 
   useEffect(() => {
     const fetchAllSuggestions = async () => {
+      console.log("userId dans fetchAllSuggestions:", userId);
       try {
         const suggestions = await getAllSuggestionsFromCoach(userId);
         setAllSuggestions(suggestions);
@@ -37,20 +41,22 @@ const ConsultTheCoach = () => {
     setError(null);
     try {
       const response = await getSuggestionFromCoach(query);
-      setSuggestion(response.suggestion.suggestion_text);
+      setSuggestion({ text: response.suggestion.suggestion_text, id: response.suggestion.id });
     } catch (err) {
       setError('Erreur lors de l\'obtention de la suggestion');
     }
     setLoading(false);
   };
 
-  const addToAgendaHandler = async () => {
+  const addToAgendaHandler = async (suggestionId) => {
+    console.log("userId dans addToAgendaHandler:", userId);
     try {
       const data = {
-        text: suggestion,
+        text: suggestion.text,
         day: agendaData.day,
-        time: agendaData.time,
-        userId: userId
+        hour: agendaData.hour,
+        userId: userId,
+        suggestionId: suggestionId
       };
       const response = await addToAgenda(data);
       toast({
@@ -58,9 +64,9 @@ const ConsultTheCoach = () => {
         position: "top-right",
         isClosable: true,
         render: ({ onClose }) => (
-          <Box color="white" p={3} bg="#ffc107" borderRadius="md">
-            <Text color="white" fontSize="xl">{TOAST_MESSAGES.SugAdded.title}</Text>
-            <Text color="white" fontSize="lg">{TOAST_MESSAGES.SugAdded.description}</Text>
+          <Box color="black" p={3} bg="#ffc107" borderRadius="md">
+            <Text color="black" fontSize="xl">{TOAST_MESSAGES.SugAdded.title}</Text>
+            <Text color="black" fontSize="lg">{TOAST_MESSAGES.SugAdded.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -109,34 +115,121 @@ const ConsultTheCoach = () => {
             Ask coach
           </Button>
             {loading && <Spinner />}
-            {suggestion && (
+            {suggestion.text && (
       <>
-        <Text mt={4}>{suggestion}</Text>
-        <input 
-          type="date" 
-          value={agendaData.day} 
+        <Text mt={4}>{suggestion.text}</Text>
+        <Text mt={2}>You must choose the right time to follow this suggestion :</Text>
+      <Select
+          bg="#424552"
+          color={selectedDay ? 'black' : '#628096'}
+          border="none"
+          outline="none"
+          focusBorderColor="#ffc107"
+          value={agendaData.day}
           onChange={(e) => setAgendaData({...agendaData, day: e.target.value})}
-        />
-        <input 
-          type="time" 
-          value={agendaData.time} 
-          onChange={(e) => setAgendaData({...agendaData, time: e.target.value})}
-        />
-        <Button onClick={addToAgendaHandler}>Ajouter à l'agenda</Button>
+        >
+        <option value="" disabled>Choose a day</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </Select>
+      <Select
+          bg="#424552"
+          color={selectedDay ? 'black' : '#628096'}
+          border="none"
+          outline="none"
+          focusBorderColor="#ffc107"
+          value={agendaData.hour} 
+          onChange={(e) => setAgendaData({...agendaData, hour: e.target.value})}
+        >
+        <option value="" disabled>Choose an hour</option>
+        <option value="8">8am</option>
+        <option value="9">9am</option>
+        <option value="10">10am</option>
+        <option value="11">11am</option>
+        <option value="0">0pm</option>
+        <option value="1">1pm</option>
+        <option value="2">2pm</option>
+        <option value="3">3pm</option>
+        <option value="4">4pm</option>
+        <option value="5">5pm</option>
+        <option value="6">6pm</option>
+        <option value="7">7pm</option>
+      </Select>
+        <Button
+          bg="#ffcf25"
+          color="black"
+          _hover={{ bg:"#ffc107"}}
+          _active={{ bg:"#ffc107"}}
+          mt={2}
+          onClick={() => addToAgendaHandler(suggestion.id)}
+        >
+          Add Suggestion
+        </Button>
       </>
     )}
     {error && <Text color="red.500">{error}</Text>}
 
-    {allSuggestions && allSuggestions.length > 0 && (
-      <Box mt={4}>
-        {allSuggestions.map((suggestion, index) => (
-          <Box key={index}>
-            <Text>{suggestion.suggestion_text}</Text>
-            <Button onClick={() => addToAgendaHandler(suggestion.suggestion_text)}>Add Suggestion</Button>
-          </Box>
-        ))}
+{isLoggedIn && allSuggestions && allSuggestions.length > 0 && (
+  <Box mt={4}>
+    {allSuggestions.map((suggestion, index) => (
+      <Box key={suggestion.id || index}>
+        <Text>{suggestion.suggestion_text}</Text>
+        <Text mt={2}>You must choose the right time to follow this suggestion :</Text>
+        <Select
+          bg="#424552"
+          color={selectedDay ? 'black' : '#628096'}
+          border="none"
+          outline="none"
+          focusBorderColor="#ffc107"
+          value={agendaData.day}
+          onChange={(e) => setAgendaData({...agendaData, day: e.target.value})}
+        >
+        <option value="" disabled>Choose a day</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </Select>
+      <Select
+          bg="#424552"
+          color={selectedDay ? 'black' : '#628096'}
+          border="none"
+          outline="none"
+          focusBorderColor="#ffc107"
+          value={agendaData.hour} 
+          onChange={(e) => setAgendaData({...agendaData, hour: e.target.value})}
+        >
+        <option value="" disabled>Choose an hour</option>
+        <option value="8">8am</option>
+        <option value="9">9am</option>
+        <option value="10">10am</option>
+        <option value="11">11am</option>
+        <option value="0">0pm</option>
+        <option value="1">1pm</option>
+        <option value="2">2pm</option>
+        <option value="3">3pm</option>
+        <option value="4">4pm</option>
+        <option value="5">5pm</option>
+        <option value="6">6pm</option>
+        <option value="7">7pm</option>
+      </Select>
+      <Button bg="#ffcf25"
+            color="black"
+            _hover={{ bg:"#ffc107"}}
+            _active={{ bg:"#ffc107"}}
+            onClick={() => addToAgendaHandler(suggestion.id)}>Add Suggestion</Button>
       </Box>
-    )}
+    ))}
+  </Box>
+)}
   </Box>
 );
 };

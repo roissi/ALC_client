@@ -6,12 +6,12 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
   const entryKey = `${day}-${hour}`;
   const entry = agendaEntries[entryKey];
   const { onOpen } = useAuth();
-
-    
+  
   return (
     <>
       <Textarea
-        value={entry?.title || ""}
+        value={entry?.isSuggestion ? 'Coach suggestion' : entry?.title || ""}
+        readOnly={entry?.isSuggestion}
         onChange={(e) => {
           // Gérer le changement de valeur du titre ici si nécessaire
         }}
@@ -20,6 +20,7 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
           // Pas d'appel à handleAgendaEntry ici
         }}
         size="md"
+        color={entry?.isSuggestion ? '#ffc107' : 'inherit'}
         fontWeight="bold"
         resize="none"
         rows="1"
@@ -55,27 +56,27 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
           boxShadow="none"
         />
       )}
-<Button 
-  type="button"
-  bg={isEditable ? "transparent" : "grey"}
-  color={isEditable ? "white" : "black"}
-  border={isEditable ? "1px solid white" : "none"}
-  _hover={{ bg: isEditable ? "transparent" : "grey" }}
-  _active={{ bg: isEditable ? "transparent" : "grey" }}
-  size="sm"
-  mt={2}
-  onClick={() => {
-    if (!isEditable) {
-      onOpen();
-      return;
-    }
-    deleteEntry(day, hour);
-  }}
->
-  Delete
-</Button>
-      </>
-    );
-  };
-  
-  export default AgendaEntry;
+      <Button 
+        type="button"
+        bg={isEditable ? "transparent" : "grey"}
+        color={isEditable ? "white" : "black"}
+        border={isEditable ? "1px solid white" : "none"}
+        _hover={{ bg: isEditable ? "transparent" : "grey" }}
+        _active={{ bg: isEditable ? "transparent" : "grey" }}
+        size="sm"
+        mt={2}
+        onClick={() => {
+          if (!isEditable) {
+            onOpen();
+            return;
+          }
+          deleteEntry(day, hour);
+        }}
+      >
+        Delete
+      </Button>
+    </>
+  );
+};
+
+export default AgendaEntry;

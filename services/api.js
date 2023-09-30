@@ -149,10 +149,10 @@ export const getSuggestionFromCoach = async (query) => {
     .catch(handleApiError);
 };
 
-// Fonction pour ajouter une entrée à l'agenda
+// Fonction pour ajouter une entrée suggestion à l'agenda
 export const addToAgenda = async (agendaData) => {
   try {
-    return await api.post('/api/agenda-entry', agendaData, { headers: getAuthHeaders() })
+    return await api.post('/api/agenda-entry/add-suggestion', agendaData, { headers: getAuthHeaders() })
       .then(res => res.data);
   } catch (error) {
     handleApiError(error);
