@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Box, Textarea, Button, Spinner, Text, useToast, CloseButton } from '@chakra-ui/react';
-import { getSuggestionFromCoach, addToAgenda, getAllSuggestionsFromCoach } from '../services/api';
+import { Select, Box, Grid, Textarea, Button, Spinner, Text, useToast, CloseButton } from '@chakra-ui/react';
+import { getSuggestionFromCoach, addToAgenda, getAllSuggestionsFromCoach, markSuggestionAsAddedToAgenda, deleteSuggestion} from '../services/api';
 import { useAuth } from './Layout';
 import { TOAST_MESSAGES } from './toastMessages';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import moment from 'moment';
 
 const ConsultTheCoach = () => {
   const toast = useToast();
@@ -14,25 +16,30 @@ const ConsultTheCoach = () => {
   const [error, setError] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
   const [agendaData, setAgendaData] = useState({ day: '', hour: '' });
-
+  const [addedToAgenda, setAddedToAgenda] = useState({});
   const [selectedDay, setSelectedDay] = useState('');
-  
+
+  const formattedDate = moment(suggestion.createdAt).format('DD.MM.YY - HH:mm');
+
   useEffect(() => {
-    console.log("userId lors du montage du composant:", userId);
     setIsEditable(isLoggedIn);
   }, [isLoggedIn]);
 
   useEffect(() => {
-    const fetchAllSuggestions = async () => {
-      console.log("userId dans fetchAllSuggestions:", userId);
+    async function fetchAllSuggestions() {
       try {
         const suggestions = await getAllSuggestionsFromCoach(userId);
-        setAllSuggestions(suggestions);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des suggestions :", error);
+        console.log("Récupérées de l'API :", suggestions);
+        const newAddedToAgenda = {};
+        suggestions.forEach((sug) => {
+          newAddedToAgenda[sug.id] = sug.is_added_to_agenda;
+        });
+        setAllSuggestions([...suggestions].reverse());
+        setAddedToAgenda(newAddedToAgenda);
+      } catch (err) {
+        console.error('Erreur lors de la récupération des suggestions:', err);
       }
-    };
-  
+    }
     fetchAllSuggestions();
   }, [userId]);
 
@@ -49,7 +56,6 @@ const ConsultTheCoach = () => {
   };
 
   const addToAgendaHandler = async (suggestionId) => {
-    console.log("userId dans addToAgendaHandler:", userId);
     try {
       const data = {
         text: suggestion.text,
@@ -59,7 +65,10 @@ const ConsultTheCoach = () => {
         suggestionId: suggestionId
       };
       const response = await addToAgenda(data);
-      toast({
+        // Marquer la suggestion comme ajoutée à l'agenda
+        await markSuggestionAsAddedToAgenda(suggestionId);
+      
+        toast({
         duration: 6000,
         position: "top-right",
         isClosable: true,
@@ -71,6 +80,9 @@ const ConsultTheCoach = () => {
           </Box>
         )
       });
+
+      setAddedToAgenda({ ...addedToAgenda, [suggestionId]: true });
+
     } catch (error) {
       console.error('Erreur lors de l\'ajout à l\'agenda:', error);
       toast({
@@ -88,6 +100,16 @@ const ConsultTheCoach = () => {
     }
   };
 
+  // Ajout d'une nouvelle fonction pour gérer la suppression.
+const deleteSuggestionHandler = async (suggestionId) => {
+  try {
+    await deleteSuggestion(suggestionId);
+    setAllSuggestions(allSuggestions.filter(sug => sug.id !== suggestionId));
+  } catch (error) {
+    console.error("Could not delete entry:", error);
+  }
+};
+
   return (
     <Box bg="tertiary" color="white" m={4} p={4} borderRadius="10px">
       <Textarea
@@ -95,7 +117,9 @@ const ConsultTheCoach = () => {
         height="6em"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        _focus={{ boxShadow: "none", borderColor: "initial" }}
+        border="none"
+        outline="none"
+        focusBorderColor="#ffc107"
       />
           <Button 
             type="submit"
@@ -118,7 +142,7 @@ const ConsultTheCoach = () => {
             {suggestion.text && (
       <>
         <Text mt={4}>{suggestion.text}</Text>
-        <Text mt={2}>You must choose the right time to follow this suggestion :</Text>
+        <Text mt={2} color="#ffcf25">You must choose the right time to follow this suggestion :</Text>
       <Select
           bg="#424552"
           color={selectedDay ? 'black' : '#628096'}
@@ -174,21 +198,59 @@ const ConsultTheCoach = () => {
     )}
     {error && <Text color="red.500">{error}</Text>}
 
-{isLoggedIn && allSuggestions && allSuggestions.length > 0 && (
-  <Box mt={4}>
+    {isLoggedIn && allSuggestions && allSuggestions.length > 0 && (
+  <Grid mt={4} templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }} gap={6}>
     {allSuggestions.map((suggestion, index) => (
-      <Box key={suggestion.id || index}>
+      <Box
+        key={suggestion.id || index}
+        bg="#424552"
+        color="black"
+        m={2}
+        p={4}
+        border="1px"
+        borderColor="quaternary"
+        borderRadius="10px"
+        flex="0 0 calc(33.333% - 4px)"
+        boxShadow="md"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+      >
+        <Text fontSize="sm" color="#ffcf25">{formattedDate}</Text>
         <Text>{suggestion.suggestion_text}</Text>
-        <Text mt={2}>You must choose the right time to follow this suggestion :</Text>
-        <Select
-          bg="#424552"
-          color={selectedDay ? 'black' : '#628096'}
-          border="none"
-          outline="none"
-          focusBorderColor="#ffc107"
-          value={agendaData.day}
-          onChange={(e) => setAgendaData({...agendaData, day: e.target.value})}
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+          height="100%" // Assure que la boîte prend toute la hauteur disponible
         >
+          <Box
+            display="flex"
+            justifyContent="space-between" // Alignement horizontal des éléments
+            alignItems="flex-end" // Alignement vertical vers le bas
+            flexGrow={1} // Pousse les éléments enfants vers le bas
+          >
+            <Box
+              display="flex"
+              flexDirection="column"
+            >
+      {addedToAgenda[suggestion.id] ? (
+        <Box display="flex" alignItems="center">
+        <FontAwesomeIcon icon="calendar-days" size="2xl" style={{ color: "#ffcf25" }} />
+        <Text ml={2} color="#ffcf25">Added to agenda</Text>
+      </Box>
+      ) : (
+      <>
+      <Text mt={2} color="#ffcf25" fontSize="sm">You must choose the right time to follow this suggestion :</Text>
+      <Select
+        bg="#424552"
+        color={selectedDay ? 'black' : '#628096'}
+        border="none"
+        outline="none"
+        focusBorderColor="#ffc107"
+        value={agendaData.day}
+        onChange={(e) => setAgendaData({...agendaData, day: e.target.value})}
+      >
         <option value="" disabled>Choose a day</option>
         <option value="Monday">Monday</option>
         <option value="Tuesday">Tuesday</option>
@@ -197,14 +259,14 @@ const ConsultTheCoach = () => {
         <option value="Friday">Friday</option>
         <option value="Saturday">Saturday</option>
         <option value="Sunday">Sunday</option>
-      </Select>
-      <Select
+        </Select>
+        <Select
           bg="#424552"
           color={selectedDay ? 'black' : '#628096'}
           border="none"
           outline="none"
           focusBorderColor="#ffc107"
-          value={agendaData.hour} 
+          value={agendaData.hour}
           onChange={(e) => setAgendaData({...agendaData, hour: e.target.value})}
         >
         <option value="" disabled>Choose an hour</option>
@@ -220,18 +282,42 @@ const ConsultTheCoach = () => {
         <option value="5">5pm</option>
         <option value="6">6pm</option>
         <option value="7">7pm</option>
-      </Select>
-      <Button bg="#ffcf25"
-            color="black"
-            _hover={{ bg:"#ffc107"}}
-            _active={{ bg:"#ffc107"}}
-            onClick={() => addToAgendaHandler(suggestion.id)}>Add Suggestion</Button>
+        </Select>
+        <Button
+        type="button"
+        bg="#ffcf25"
+        color="black"
+        _hover={{ bg:"#ffc107"}}
+        _active={{ bg:"#ffc107"}}
+        size="sm"
+        onClick={() => addToAgendaHandler(suggestion.id)}
+      >
+        Add suggestion
+      </Button>
+    </>
+  )}
+  </Box>
+  <Button
+    type="button"
+    bg="transparent"
+    color="white"
+    border="1px solid white"
+    _hover="transparent"
+    _active="transparent"
+    size="sm"
+    ml={2}
+    onClick={() => deleteSuggestionHandler(suggestion.id)}
+  >
+    Delete
+  </Button>
+  </Box>
+</Box>
       </Box>
     ))}
-  </Box>
+  </Grid>
 )}
   </Box>
-);
+  )
 };
 
 export default ConsultTheCoach;
