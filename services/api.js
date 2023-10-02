@@ -165,3 +165,22 @@ export const getAllSuggestionsFromCoach = async (userId) => {
     .then(res => res.data)
     .catch(handleApiError);
 };
+
+// Fonction pour marquer une suggestion comme ajoutée à l'agenda
+export const markSuggestionAsAddedToAgenda = async (suggestionId) => {
+  try {
+    return await api.put(`/api/suggestion/markAsAdded/${suggestionId}`, {}, { headers: getAuthHeaders() })
+      .then(res => res.data);
+  } catch (error) {
+    handleApiError(error);
+  }
+};
+
+export const deleteSuggestion = async (suggestionId) => {
+  try {
+    return await api.delete(`/api/suggestion/${suggestionId}`, { headers: getAuthHeaders() })
+      .then(res => res.data);
+  } catch (error) {
+    handleApiError(error);
+  }
+};
