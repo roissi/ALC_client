@@ -176,6 +176,15 @@ export const markSuggestionAsAddedToAgenda = async (suggestionId) => {
   }
 };
 
+export const markSuggestionAsRemovedFromAgenda = async (suggestionId) => {
+  try {
+    return await api.put(`/api/suggestion/markAsRemoved/${suggestionId}`, {}, { headers: getAuthHeaders() })
+      .then(res => res.data);
+  } catch (error) {
+    handleApiError(error);
+  }
+};
+
 export const deleteSuggestion = async (suggestionId) => {
   try {
     return await api.delete(`/api/suggestion/${suggestionId}`, { headers: getAuthHeaders() })
