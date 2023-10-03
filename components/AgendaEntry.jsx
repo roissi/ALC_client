@@ -40,7 +40,7 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
         }}
         size="md"
         resize="none"
-        rows="5"
+        rows="8"
         border="none"
         outline="none"
         boxShadow="none"
