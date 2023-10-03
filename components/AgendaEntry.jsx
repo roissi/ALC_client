@@ -1,11 +1,33 @@
 import React from 'react';
 import { Textarea, Button } from '@chakra-ui/react';
 import { useAuth } from './Layout';
+import { markSuggestionAsRemovedFromAgenda } from '../services/api';
 
 const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
   const entryKey = `${day}-${hour}`;
   const entry = agendaEntries[entryKey];
   const { onOpen } = useAuth();
+
+  const handleDelete = async () => {
+    console.log("Valeur de agendaEntries:", agendaEntries); // Nouveau log
+    console.log("Valeur de entryKey:", entryKey); // Nouveau log
+    console.log("Valeur de entry:", entry); // Nouveau log
+    if (!isEditable) {
+      onOpen();
+      return;
+    }
+    deleteEntry(day, hour);
+
+    console.log("Vérification de entry?.isSuggestion:", entry?.suggestion_id);
+
+    // Si c'est une suggestion, mettez à jour son statut
+    if (entry?.suggestion_id) {
+      console.log("Avant appel à markSuggestionAsRemovedFromAgenda"); // Ajout d'un log
+      await markSuggestionAsRemovedFromAgenda(entry?.suggestion_id); // Assurez-vous que cette fonction existe
+      console.log("Après appel à markSuggestionAsRemovedFromAgenda"); // Ajout d'un log
+
+    }
+  };
   
   return (
     <>
@@ -65,13 +87,7 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
         _active={{ bg: isEditable ? "transparent" : "grey" }}
         size="sm"
         mt={2}
-        onClick={() => {
-          if (!isEditable) {
-            onOpen();
-            return;
-          }
-          deleteEntry(day, hour);
-        }}
+        onClick={handleDelete}
       >
         Delete
       </Button>
