@@ -28,7 +28,7 @@ export default function Home() {
           mx={12}
         >
           <FontAwesomeIcon icon="calendar-days" style={{ marginRight: "15px" }} />
-          My Amazing week
+          My amazing week
         </Heading>
         <Heading
           size="xl"

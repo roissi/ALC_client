@@ -41,4 +41,8 @@ export const TOAST_MESSAGES = {
       title: 'OUPS, BAD ISSUE',
       description: 'Error adding to calendar.'
     },
+    ErrAdded: {
+      title: 'MISSING DAY AND HOUR',
+      description: 'Please enter the day and time to enter the suggestion in your calendar.'
+    },
 };

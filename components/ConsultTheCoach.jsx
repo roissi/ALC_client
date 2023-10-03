@@ -56,6 +56,23 @@ const ConsultTheCoach = () => {
   };
 
   const addToAgendaHandler = async (suggestionId) => {
+    if (!agendaData.day || !agendaData.hour) {
+      // Afficher un toast pour avertir l'utilisateur
+      toast({
+        duration: 4000,
+        position: "top-right",
+        isClosable: true,
+        render: ({ onClose }) => (
+          <Box color="white" p={3} bg="#b63333" borderRadius="md">
+            <Text color="white" fontSize="xl">{TOAST_MESSAGES.ErrAdded.title}</Text>
+            <Text color="white" fontSize="lg">{TOAST_MESSAGES.ErrAdded.description}</Text>
+            <CloseButton onClick={onClose} />
+          </Box>
+        )
+      });
+      return; // Sortir de la fonction
+    }
+
     try {
       const data = {
         text: suggestion.text,
@@ -175,14 +192,14 @@ const deleteSuggestionHandler = async (suggestionId) => {
         <option value="9">9am</option>
         <option value="10">10am</option>
         <option value="11">11am</option>
-        <option value="0">0pm</option>
-        <option value="1">1pm</option>
-        <option value="2">2pm</option>
-        <option value="3">3pm</option>
-        <option value="4">4pm</option>
-        <option value="5">5pm</option>
-        <option value="6">6pm</option>
-        <option value="7">7pm</option>
+        <option value="12">0pm</option>
+        <option value="13">1pm</option>
+        <option value="14">2pm</option>
+        <option value="15">3pm</option>
+        <option value="16">4pm</option>
+        <option value="17">5pm</option>
+        <option value="18">6pm</option>
+        <option value="19">7pm</option>
       </Select>
         <Button
           bg="#ffcf25"
@@ -274,14 +291,14 @@ const deleteSuggestionHandler = async (suggestionId) => {
         <option value="9">9am</option>
         <option value="10">10am</option>
         <option value="11">11am</option>
-        <option value="0">0pm</option>
-        <option value="1">1pm</option>
-        <option value="2">2pm</option>
-        <option value="3">3pm</option>
-        <option value="4">4pm</option>
-        <option value="5">5pm</option>
-        <option value="6">6pm</option>
-        <option value="7">7pm</option>
+        <option value="12">0pm</option>
+        <option value="13">1pm</option>
+        <option value="14">2pm</option>
+        <option value="15">3pm</option>
+        <option value="16">4pm</option>
+        <option value="17">5pm</option>
+        <option value="18">6pm</option>
+        <option value="19">7pm</option>
         </Select>
         <Button
         type="button"
