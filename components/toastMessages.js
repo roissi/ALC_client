@@ -31,7 +31,7 @@ export const TOAST_MESSAGES = {
 
     error: {
       title: 'ERROR',
-      description: 'Please select at least one interest and one need.'
+      description: 'Please select at least one interest and one need, and indicate a duration (in days) for your need.'
     },
     problem: {
       title: 'OUPS, BAD ISSUE',
