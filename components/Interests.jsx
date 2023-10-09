@@ -180,7 +180,7 @@ return (
         
         <Box bg="tertiary" p={8} borderRadius="10px">
           <Heading as="h2" size="md" mb={6}>
-            What are your most important desire or need at the moment?
+            What are your most important need at the moment?
           </Heading>
           <CheckboxGroup value={Object.keys(selectedNeedsMap).filter(key => selectedNeedsMap[key])} onChange={vals => vals.forEach(val => toggleNeedSelection(val))}>
             <Stack spacing={3}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Select, Box, Grid, Textarea, Button, Spinner, Text, useToast, CloseButton } from '@chakra-ui/react';
-import { getSuggestionFromCoach, addToAgenda, getAllSuggestionsFromCoach, markSuggestionAsAddedToAgenda, deleteSuggestion} from '../services/api';
+import { getSuggestionFromCoach, addToAgenda, getAllSuggestionsFromCoach, markSuggestionAsAddedToAgenda, deleteSuggestion } from '../services/api';
 import { useAuth } from './Layout';
 import { TOAST_MESSAGES } from './toastMessages';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -57,7 +57,6 @@ const ConsultTheCoach = () => {
 
   const addToAgendaHandler = async (suggestionId) => {
     if (!agendaData.day || !agendaData.hour) {
-      // Afficher un toast pour avertir l'utilisateur
       toast({
         duration: 4000,
         position: "top-right",
@@ -70,7 +69,7 @@ const ConsultTheCoach = () => {
           </Box>
         )
       });
-      return; // Sortir de la fonction
+      return;
     }
 
     try {
@@ -82,7 +81,6 @@ const ConsultTheCoach = () => {
         suggestionId: suggestionId
       };
       const response = await addToAgenda(data);
-        // Marquer la suggestion comme ajoutée à l'agenda
         await markSuggestionAsAddedToAgenda(suggestionId);
       
         toast({
@@ -117,7 +115,6 @@ const ConsultTheCoach = () => {
     }
   };
 
-  // Ajout d'une nouvelle fonction pour gérer la suppression.
 const deleteSuggestionHandler = async (suggestionId) => {
   try {
     await deleteSuggestion(suggestionId);
@@ -239,13 +236,13 @@ const deleteSuggestionHandler = async (suggestionId) => {
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
-          height="100%" // Assure que la boîte prend toute la hauteur disponible
+          height="100%"
         >
           <Box
             display="flex"
-            justifyContent="space-between" // Alignement horizontal des éléments
-            alignItems="flex-end" // Alignement vertical vers le bas
-            flexGrow={1} // Pousse les éléments enfants vers le bas
+            justifyContent="space-between"
+            alignItems="flex-end"
+            flexGrow={1}
           >
             <Box
               display="flex"
