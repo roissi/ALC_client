@@ -1,5 +1,5 @@
 import React from 'react';
-import { Textarea, Button } from '@chakra-ui/react';
+import { Textarea, Button, Tooltip } from '@chakra-ui/react';
 import { useAuth } from './Layout';
 import { markSuggestionAsRemovedFromAgenda } from '../services/api';
 
@@ -51,7 +51,8 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
         boxShadow="none"
         mb={1}
       />
-      <Textarea
+      <Tooltip hasArrow label={entry?.description || ""} bg='primary' placement="auto-start">
+        <Textarea
         value={entry?.description || ""}
         onChange={(e) => {
           // Gérer le changement de valeur de la description ici si nécessaire
@@ -67,6 +68,7 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
         outline="none"
         boxShadow="none"
       />
+      </Tooltip>
       {entry?.suggestion_text && (
         <Textarea
           value={entry?.suggestion_text}
