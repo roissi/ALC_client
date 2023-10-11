@@ -200,7 +200,7 @@ const Agenda = () => {
               ) : (
                 <AgendaEntry 
                   day={day} 
-                  hour={hour} 
+                  hour={hour}
                   agendaEntries={agendaEntries} 
                   deleteEntry={deleteEntry} 
                   isEditable={isEditable}
