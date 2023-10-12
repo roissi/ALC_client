@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Textarea, Button, Tooltip } from '@chakra-ui/react';
 import { useAuth } from './Layout';
 import { markSuggestionAsRemovedFromAgenda } from '../services/api';
@@ -7,6 +7,21 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
   const entryKey = `${day}-${hour}`;
   const entry = agendaEntries[entryKey];
   const { onOpen } = useAuth();
+
+  const descriptionRef = useRef(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  useEffect(() => {
+    if (descriptionRef.current) {
+      const element = descriptionRef.current;
+      if (element.scrollHeight > element.clientHeight) {
+        setIsOverflowing(true);
+      } else {
+        setIsOverflowing(false);
+      }
+    }
+  }, [entry?.description]);
 
   const handleDelete = async () => {
     console.log("Valeur de agendaEntries:", agendaEntries); // Nouveau log
@@ -51,8 +66,14 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
         boxShadow="none"
         mb={1}
       />
-      <Tooltip hasArrow label={entry?.description || ""} bg='primary' placement="auto-start">
+      <Tooltip
+        hasArrow label={entry?.description || ""}
+        bg='primary'
+        placement="auto-start"
+        isOpen={isOverflowing && showTooltip}
+      >
         <Textarea
+        ref={descriptionRef}
         value={entry?.description || ""}
         onChange={(e) => {
           // Gérer le changement de valeur de la description ici si nécessaire
@@ -67,6 +88,8 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
         border="none"
         outline="none"
         boxShadow="none"
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
       />
       </Tooltip>
       {entry?.suggestion_text && (
