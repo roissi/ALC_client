@@ -31,29 +31,39 @@ const AgendaForm = ({ day, hour, onEntryCreated, isEditable }) => {
     placeholder="Title"
     value={title}
     onChange={(e) => setTitle(e.target.value)}
-    bg="#424552"
-    color="white"
+    bg="tertiary"
+    color="secondary"
     border="none"
     outline="none"
-    focusBorderColor="#ffc107"
+    focusBorderColor="quaternary"
+    sx={{
+      "::placeholder": {
+        color: "quinary"
+      }
+    }}
   />
   <Input
     type="text"
     placeholder="Description"
     value={description}
     onChange={(e) => setDescription(e.target.value)}
-    bg="#424552"
-    color="white"
+    bg="tertiary"
+    color="secondary"
     border="none"
     outline="none"
-    focusBorderColor="#ffc107"
+    focusBorderColor="quaternary"
+    sx={{
+      "::placeholder": {
+        color: "quinary"
+      }
+    }}
   />
     <Button 
       type="submit"
-      bg={isEditable ? "#ffcf25" : "grey"}
-      color="black"
-      _hover={{ bg: isEditable ? "#ffc107" : "grey" }}
-      _active={{ bg: isEditable ? "#ffc107" : "grey" }}
+      bg={isEditable ? "quaternary" : "senary"}
+      color={isEditable ? "primary" : "primary"}
+      _hover={{ bg: isEditable ? "quinary" : "senary" }}
+      _active={{ bg: isEditable ? "quinary" : "senary" }}
       size="sm"
       mt={2}
       onClick={() => {

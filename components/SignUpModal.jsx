@@ -50,9 +50,9 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
           position: "top-right",
           isClosable: true,
           render: ({ onClose }) => (
-            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
-              <Text color="black" fontSize="xl">{TOAST_MESSAGES.signup.title}</Text>
-              <Text color="black" fontSize="lg">{TOAST_MESSAGES.signup.description}</Text>
+            <Box color="primary" p={3} bg="quaternary" borderRadius="md">
+              <Text color="primary" fontSize="xl">{TOAST_MESSAGES.signup.title}</Text>
+              <Text color="primary" fontSize="lg">{TOAST_MESSAGES.signup.description}</Text>
               <CloseButton onClick={onClose} />
             </Box>
           ),
@@ -81,10 +81,10 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
       ) : (
         <div style={{ display: "flex", alignItems: "center" }}>
           <Button 
-            bg="#ffc107" 
-            color="black" 
-            _hover={{ bg: "#ffcf25" }} 
-            _active={{ bg: "#ffcf25" }}
+            bg="secondary" 
+            color="tertiary" 
+            _hover={{ bg: "quinary" }} 
+            _active={{ bg: "quinary" }}
             onClick={onOpen}
           >
             Sign Up
@@ -135,10 +135,10 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
 
           <ModalFooter>
           <Button 
-              bg="#ffcf25" 
-              color="black" 
-              _hover={{ bg: "#ffc107" }} 
-              _active={{ bg: "#ffc107" }}
+              bg="secondary" 
+              color="tertiary" 
+              _hover={{ bg: "quinary" }} 
+              _active={{ bg: "quinary" }}
               onClick={handleSubmit}
             >
               Sign Up

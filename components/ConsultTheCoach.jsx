@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Box, Grid, Textarea, Button, Spinner, Text, useToast, CloseButton } from '@chakra-ui/react';
+import { Select, Box, Grid, Textarea, Button, Spinner, Text, useToast, CloseButton, Image } from '@chakra-ui/react';
 import { getSuggestionFromCoach, addToAgenda, getAllSuggestionsFromCoach, markSuggestionAsAddedToAgenda, deleteSuggestion } from '../services/api';
 import { useAuth } from './Layout';
 import { TOAST_MESSAGES } from './toastMessages';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 
 const ConsultTheCoach = () => {
@@ -62,9 +61,9 @@ const ConsultTheCoach = () => {
         position: "top-right",
         isClosable: true,
         render: ({ onClose }) => (
-          <Box color="white" p={3} bg="#b63333" borderRadius="md">
-            <Text color="white" fontSize="xl">{TOAST_MESSAGES.ErrAdded.title}</Text>
-            <Text color="white" fontSize="lg">{TOAST_MESSAGES.ErrAdded.description}</Text>
+          <Box color="primary" p={3} bg="error" borderRadius="md">
+            <Text color="primary" fontSize="xl">{TOAST_MESSAGES.ErrAdded.title}</Text>
+            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.ErrAdded.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -88,9 +87,9 @@ const ConsultTheCoach = () => {
         position: "top-right",
         isClosable: true,
         render: ({ onClose }) => (
-          <Box color="black" p={3} bg="#ffc107" borderRadius="md">
-            <Text color="black" fontSize="xl">{TOAST_MESSAGES.SugAdded.title}</Text>
-            <Text color="black" fontSize="lg">{TOAST_MESSAGES.SugAdded.description}</Text>
+          <Box color="primary" p={3} bg="quaternary" borderRadius="md">
+            <Text color="primaryk" fontSize="xl">{TOAST_MESSAGES.SugAdded.title}</Text>
+            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.SugAdded.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -105,9 +104,9 @@ const ConsultTheCoach = () => {
         position: "top-right",
         isClosable: true,
         render: ({ onClose }) => (
-          <Box color="white" p={3} bg="#b63333" borderRadius="md">
-            <Text color="white" fontSize="xl">{TOAST_MESSAGES.SugAddedError.title}</Text>
-            <Text color="white" fontSize="lg">{TOAST_MESSAGES.SugAddedError.description}</Text>
+          <Box color="primary" p={3} bg="error" borderRadius="md">
+            <Text color="primary" fontSize="xl">{TOAST_MESSAGES.SugAddedError.title}</Text>
+            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.SugAddedError.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -125,7 +124,7 @@ const deleteSuggestionHandler = async (suggestionId) => {
 };
 
   return (
-    <Box bg="tertiary" color="white" m={4} p={4} borderRadius="10px">
+    <Box bg="tertiary" color="secondary" m={4} p={4} borderRadius="10px">
       <Textarea
         placeholder="What should I do today?"
         height="6em"
@@ -133,14 +132,19 @@ const deleteSuggestionHandler = async (suggestionId) => {
         onChange={(e) => setQuery(e.target.value)}
         border="none"
         outline="none"
-        focusBorderColor="#ffc107"
+        focusBorderColor="#15b9fe"
+        sx={{
+          "::placeholder": {
+            color: "quinary"
+          }
+        }}
       />
           <Button 
             type="submit"
-            bg={isEditable ? "#ffcf25" : "grey"}
-            color="black"
-            _hover={{ bg: isEditable ? "#ffc107" : "grey" }}
-            _active={{ bg: isEditable ? "#ffc107" : "grey" }}
+            bg={isEditable ? "quaternary" : "senary"}
+            color={isEditable ? "primary" : "primary"}
+            _hover={{ bg: isEditable ? "quinary" : "senary" }}
+            _active={{ bg: isEditable ? "quinary" : "senary" }}
             mt={2}
             onClick={() => {
               if (!isEditable) {
@@ -155,14 +159,14 @@ const deleteSuggestionHandler = async (suggestionId) => {
             {loading && <Spinner />}
             {suggestion.text && (
       <>
-        <Text mt={4}>{suggestion.text}</Text>
-        <Text mt={2} color="#ffcf25">You must choose the right time to follow this suggestion :</Text>
+        <Text color="secondary" mt={4}>{suggestion.text}</Text>
+        <Text mt={2} color="quaternary">You must choose the right time to follow this suggestion :</Text>
       <Select
-          bg="#424552"
-          color={selectedDay ? 'black' : '#628096'}
+          bg="tertiary"
+          color={selectedDay ? 'secondary' : 'secondary'}
           border="none"
           outline="none"
-          focusBorderColor="#ffc107"
+          focusBorderColor="quaternary"
           value={agendaData.day}
           onChange={(e) => setAgendaData({...agendaData, day: e.target.value})}
         >
@@ -176,11 +180,11 @@ const deleteSuggestionHandler = async (suggestionId) => {
         <option value="Sunday">Sunday</option>
       </Select>
       <Select
-          bg="#424552"
-          color={selectedDay ? 'black' : '#628096'}
+          bg="tertiary"
+          color={selectedDay ? 'secondary' : 'secondary'}
           border="none"
           outline="none"
-          focusBorderColor="#ffc107"
+          focusBorderColor="quaternary"
           value={agendaData.hour} 
           onChange={(e) => setAgendaData({...agendaData, hour: e.target.value})}
         >
@@ -199,10 +203,10 @@ const deleteSuggestionHandler = async (suggestionId) => {
         <option value="19">7pm</option>
       </Select>
         <Button
-          bg="#ffcf25"
-          color="black"
-          _hover={{ bg:"#ffc107"}}
-          _active={{ bg:"#ffc107"}}
+          bg="quaternary"
+          color="primary"
+          _hover={{ bg:"quinary"}}
+          _active={{ bg:"quinary"}}
           mt={2}
           onClick={() => addToAgendaHandler(suggestion.id)}
         >
@@ -217,12 +221,12 @@ const deleteSuggestionHandler = async (suggestionId) => {
     {allSuggestions.map((suggestion, index) => (
       <Box
         key={suggestion.id || index}
-        bg="#424552"
-        color="black"
+        bg="tertiary"
+        color="secondary"
         m={2}
         p={4}
-        border="1px"
-        borderColor="quaternary"
+        border="2px"
+        borderColor="secondary"
         borderRadius="10px"
         flex="0 0 calc(33.333% - 4px)"
         boxShadow="md"
@@ -230,8 +234,8 @@ const deleteSuggestionHandler = async (suggestionId) => {
         flexDirection="column"
         justifyContent="space-between"
       >
-        <Text fontSize="sm" color="#ffcf25">{formattedDate}</Text>
-        <Text>{suggestion.suggestion_text}</Text>
+        <Text fontSize="sm" color="quaternary">{formattedDate}</Text>
+        <Text color="secondary">{suggestion.suggestion_text}</Text>
         <Box
           display="flex"
           flexDirection="column"
@@ -250,18 +254,18 @@ const deleteSuggestionHandler = async (suggestionId) => {
             >
       {addedToAgenda[suggestion.id] ? (
         <Box display="flex" alignItems="center">
-        <FontAwesomeIcon icon="calendar-days" size="2xl" style={{ color: "#ffcf25" }} />
-        <Text ml={2} color="#ffcf25">Added to agenda</Text>
+          <Image src="/img/calendar_light.png" alt="Calendar" h="40px" objectFit="cover" />
+        <Text ml={2} color="quaternary">Added to agenda</Text>
       </Box>
       ) : (
       <>
-      <Text mt={2} color="#ffcf25" fontSize="sm">You must choose the right time to follow this suggestion :</Text>
+      <Text mt={2} color="quaternary" fontSize="sm">You must choose the right time to follow this suggestion :</Text>
       <Select
-        bg="#424552"
-        color={selectedDay ? 'black' : '#628096'}
+        bg="tertiary"
+        color={selectedDay ? 'secondary' : 'secondary'}
         border="none"
         outline="none"
-        focusBorderColor="#ffc107"
+        focusBorderColor="quaternary"
         value={agendaData.day}
         onChange={(e) => setAgendaData({...agendaData, day: e.target.value})}
       >
@@ -275,11 +279,11 @@ const deleteSuggestionHandler = async (suggestionId) => {
         <option value="Sunday">Sunday</option>
         </Select>
         <Select
-          bg="#424552"
-          color={selectedDay ? 'black' : '#628096'}
+          bg="tertiary"
+          color={selectedDay ? 'secondary' : 'secondary'}
           border="none"
           outline="none"
-          focusBorderColor="#ffc107"
+          focusBorderColor="quaternary"
           value={agendaData.hour}
           onChange={(e) => setAgendaData({...agendaData, hour: e.target.value})}
         >
@@ -299,10 +303,10 @@ const deleteSuggestionHandler = async (suggestionId) => {
         </Select>
         <Button
         type="button"
-        bg="#ffcf25"
-        color="black"
-        _hover={{ bg:"#ffc107"}}
-        _active={{ bg:"#ffc107"}}
+        bg="quaternary"
+        color="primary"
+        _hover={{ bg:"quinary"}}
+        _active={{ bg:"quinary"}}
         size="sm"
         onClick={() => addToAgendaHandler(suggestion.id)}
       >
@@ -313,11 +317,10 @@ const deleteSuggestionHandler = async (suggestionId) => {
   </Box>
   <Button
     type="button"
-    bg="transparent"
-    color="white"
-    border="1px solid white"
-    _hover="transparent"
-    _active="transparent"
+    bg="quaternary"
+    color="primary"
+    _hover={{ bg:"quinary"}}
+    _active={{ bg:"quinary"}}
     size="sm"
     ml={2}
     onClick={() => deleteSuggestionHandler(suggestion.id)}

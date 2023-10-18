@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Textarea, Button, Tooltip } from '@chakra-ui/react';
+import { Textarea, Button, Tooltip, Flex, Image } from '@chakra-ui/react';
 import { useAuth } from './Layout';
 import { markSuggestionAsRemovedFromAgenda } from '../services/api';
 
@@ -24,9 +24,6 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
   }, [entry?.description]);
 
   const handleDelete = async () => {
-    console.log("Valeur de agendaEntries:", agendaEntries); // Nouveau log
-    console.log("Valeur de entryKey:", entryKey); // Nouveau log
-    console.log("Valeur de entry:", entry); // Nouveau log
     if (!isEditable) {
       onOpen();
       return;
@@ -46,9 +43,28 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
   
   return (
     <>
+      {entry?.title === 'COACH SUGGESTION' ? (
+    <Flex alignItems="center">
+        <Image src="/img/brain_light.png" alt="Brain" boxSize="30px" ml={3} mr={-2} />
+        <Textarea
+          value='FROM COACH'
+          readOnly={true}
+          size="md"
+          color='secondary'
+          fontWeight="bold"
+          resize="none"
+          rows="1"
+          border="none"
+          outline="none"
+          boxShadow="none"
+          mb={1}
+        />
+    </Flex>
+) : (
+    <Flex alignItems="center">
+      <Image src="/img/calendar_light.png" alt="Calendar" h="30px" objectFit="cover" ml={3} mr={-1} />
       <Textarea
-        value={entry?.isSuggestion ? 'Coach suggestion' : entry?.title || ""}
-        readOnly={entry?.isSuggestion}
+        value={entry?.title || ""}
         onChange={(e) => {
           // Gérer le changement de valeur du titre ici si nécessaire
         }}
@@ -57,18 +73,20 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
           // Pas d'appel à handleAgendaEntry ici
         }}
         size="md"
-        color={entry?.isSuggestion ? '#ffc107' : 'inherit'}
-        fontWeight="bold"
         resize="none"
+        fontWeight="bold"
         rows="1"
         border="none"
         outline="none"
         boxShadow="none"
         mb={1}
-      />
+    />
+    </Flex>
+)}
       <Tooltip
         hasArrow label={entry?.description || ""}
-        bg='primary'
+        bg='tertiary'
+        color="secondary"
         placement="auto-start"
         isOpen={isOverflowing && showTooltip}
       >
@@ -105,11 +123,10 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
       )}
       <Button 
         type="button"
-        bg={isEditable ? "transparent" : "grey"}
-        color={isEditable ? "white" : "black"}
-        border={isEditable ? "1px solid white" : "none"}
-        _hover={{ bg: isEditable ? "transparent" : "grey" }}
-        _active={{ bg: isEditable ? "transparent" : "grey" }}
+        bg={isEditable ? "quaternary" : "senary"}
+        color={isEditable ? "primary" : "primary"}
+        _hover={{ bg: isEditable ? "quinary" : "senary" }}
+        _active={{ bg: isEditable ? "quinary" : "senary" }}
         size="sm"
         mt={2}
         onClick={handleDelete}
