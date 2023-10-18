@@ -108,9 +108,9 @@ const Interests = () => {
         position: "top-right",
         isClosable: true,
         render: ({ onClose }) => (
-          <Box color="white" p={3} bg="#b63333" borderRadius="md">
-            <Text color="white" fontSize="xl">{TOAST_MESSAGES.error.title}</Text>
-            <Text color="white" fontSize="lg">{TOAST_MESSAGES.error.description}</Text>
+          <Box color="primary" p={3} bg="error" borderRadius="md">
+            <Text color="primary" fontSize="xl">{TOAST_MESSAGES.error.title}</Text>
+            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.error.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -125,9 +125,9 @@ const Interests = () => {
         position: "top-right",
         isClosable: true,
         render: ({ onClose }) => (
-          <Box color="black" p={3} bg="#ffc107" borderRadius="md">
-            <Text color="black" fontSize="xl">{TOAST_MESSAGES.success.title}</Text>
-            <Text color="black" fontSize="lg">{TOAST_MESSAGES.success.description}</Text>
+          <Box color="primary" p={3} bg="quaternary" borderRadius="md">
+            <Text color="primary" fontSize="xl">{TOAST_MESSAGES.success.title}</Text>
+            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.success.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -139,9 +139,9 @@ const Interests = () => {
         position: "top-right",
         isClosable: true,
         render: ({ onClose }) => (
-          <Box color="white" p={3} bg="#b63333" borderRadius="md">
-            <Text color="white" fontSize="xl">{TOAST_MESSAGES.problem.title}</Text>
-            <Text color="white" fontSize="lg">{TOAST_MESSAGES.problem.description}</Text>
+          <Box color="primary" p={3} bg="error" borderRadius="md">
+            <Text color="primary" fontSize="xl">{TOAST_MESSAGES.problem.title}</Text>
+            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.problem.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )
@@ -150,9 +150,9 @@ const Interests = () => {
   };
 
 return (
-    <Box bg="secondary" color="white" m={4} p={4} borderRadius="10px">
-      <Grid templateColumns="1fr 1fr" gap={8} bg="#343440" p={3} borderRadius="10px">
-        <Box bg="tertiary" p={8} borderRadius="10px">
+    <Box bg="tertiary" color="secondary" m={4} p={4} borderRadius="10px">
+      <Grid templateColumns="1fr 1fr" gap={8} bg="tertiary" p={3} borderRadius="10px">
+        <Box bg="tertiary" p={8} borderRadius="10px" border="2px solid #002136" boxShadow="md">
           <Heading as="h2" size="md" mb={6}>
             Select your interests :
           </Heading>
@@ -164,21 +164,22 @@ return (
                   value={interest.id}
                   __css={{
                 '.chakra-checkbox__control': {
+                    borderColor: "secondary",
                     _checked: {
-                    bg: "#ffc107 !important",
-                    borderColor: "#ffc107 !important",
+                    bg: "#15b9fe !important",
+                    borderColor: "#15b9fe !important",
                     },
                   },
                   }}
               />
-                <Text fontSize="lg" ml={2}>{interest.name}</Text>
+                <Text color="secondary" fontSize="lg" ml={2}>{interest.name}</Text>
               </Flex>
               ))}
             </Stack>
           </CheckboxGroup>
         </Box>
         
-        <Box bg="tertiary" p={8} borderRadius="10px">
+        <Box bg="tertiary" p={8} borderRadius="10px" border="2px solid #002136">
           <Heading as="h2" size="md" mb={6}>
             What are your most important need at the moment?
           </Heading>
@@ -192,16 +193,17 @@ return (
                         value={need.id.toString()}
                         __css={{
                           '.chakra-checkbox__control': {
+                            borderColor: "secondary",
                             _checked: {
-                            bg: "#ffc107 !important",
-                            borderColor: "#ffc107 !important",
+                            bg: "#15b9fe !important",
+                            borderColor: "#15b9fe !important",
                             },
                           },
                         }}
                         isChecked={selectedNeedsMap[need.id] || false}
                         onClick={() => toggleNeedSelection(need.id)}
                       />
-                      <Text fontSize="lg" ml={2}>{need.name}</Text>
+                      <Text color="secondary" fontSize="lg" ml={2}>{need.name}</Text>
                     </Flex>
                     {selectedNeedsMap[need.id] && (
                 <Flex direction="row" alignItems="baseline" mt={2}>
@@ -216,10 +218,15 @@ return (
                       border="none"
                       outline="none"
                       boxShadow="none"
-                      focusBorderColor="#ffc107"
+                      focusBorderColor="quaternary"
                       minWidth="80px"
                       ml={4}
                       onChange={e => handleDurationChange(need.id, e.target.value)}
+                      sx={{
+                        "::placeholder": {
+                          color: "quinary"
+                        }
+                      }}
                     />
                 </Flex>
                 )}
@@ -231,18 +238,23 @@ return (
         </Box>
       </Grid>
 
-      <Box bg="secondary" color="white" m={4} p={4} borderRadius="10px">
+      <Box bg="tertiary" color="white" m={4} p={4} borderRadius="10px">
         {choicesMade ? (
           <Flex direction="row" justifyContent="flex-start">
-          <Button colorScheme="yellow" onClick={async () => { await updateUserInterests(userId, selectedInterests, selectedNeedsWithDuration); setChoicesMade(true); 
+          <Button
+            bg="quaternary"
+            color="primary"
+            _hover={{ bg: "quinary" }} 
+            _active={{ bg: "quinary" }}
+            onClick={async () => { await updateUserInterests(userId, selectedInterests, selectedNeedsWithDuration); setChoicesMade(true); 
           toast({
             duration: 6000,
             position: "top-right",
             isClosable: true,
           render: ({ onClose }) => (
-            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
-              <Text color="black" fontSize="xl">{TOAST_MESSAGES.updated.title}</Text>
-              <Text color="black" fontSize="lg">{TOAST_MESSAGES.updated.description}</Text>
+            <Box color="primary" p={3} bg="quaternary" borderRadius="md">
+              <Text color="primary" fontSize="xl">{TOAST_MESSAGES.updated.title}</Text>
+              <Text color="primary" fontSize="lg">{TOAST_MESSAGES.updated.description}</Text>
               <CloseButton onClick={onClose} />
             </Box>
             )
@@ -250,7 +262,13 @@ return (
         }}
           >Change my choices
           </Button>
-          <Button colorScheme="yellow" ml={4} onClick={async () => { await deleteUserInterests(userId); 
+          <Button
+            bg="quaternary"
+            color="primary"
+            _hover={{ bg: "quinary" }} 
+            _active={{ bg: "quinary" }}
+            ml={4}
+            onClick={async () => { await deleteUserInterests(userId); 
           setSelectedInterests([]);
           setSelectedNeedsMap({});
           setSelectedNeedsWithDuration([]);
@@ -260,9 +278,9 @@ return (
             position: "top-right",
             isClosable: true,
           render: ({ onClose }) => (
-            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
-              <Text color="black">{TOAST_MESSAGES.deleted.title}</Text>
-              <Text color="black">{TOAST_MESSAGES.deleted.description}</Text>
+            <Box color="primary" p={3} bg="quaternary" borderRadius="md">
+              <Text color="primary">{TOAST_MESSAGES.deleted.title}</Text>
+              <Text color="primary">{TOAST_MESSAGES.deleted.description}</Text>
               <CloseButton onClick={onClose} />
             </Box>
             )
@@ -273,10 +291,10 @@ return (
         ) : (
 <Button 
   type="submit"
-  bg={isEditable ? "#ffcf25" : "grey"}
-  color="black"
-  _hover={{ bg: isEditable ? "#ffc107" : "grey" }}
-  _active={{ bg: isEditable ? "#ffc107" : "grey" }}
+  bg={isEditable ? "quaternary" : "senary"}
+  color={isEditable ? "primary" : "primary"}
+  _hover={{ bg: isEditable ? "quinary" : "senary" }}
+  _active={{ bg: isEditable ? "quinary" : "senary" }}
   mt={2}
   onClick={() => {
     if (!isEditable) {

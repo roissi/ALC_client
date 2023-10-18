@@ -97,9 +97,9 @@ const Agenda = () => {
           position: "top-right",
           isClosable: true,
           render: ({ onClose }) => (
-            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
-              <Text color="black" fontSize="xl">{TOAST_MESSAGES.entry.title}</Text>
-              <Text color="black" fontSize="lg">{TOAST_MESSAGES.entry.description}</Text>
+            <Box color="primary" p={3} bg="quaternary" borderRadius="md">
+              <Text color="primary" fontSize="xl">{TOAST_MESSAGES.entry.title}</Text>
+              <Text color="primary" fontSize="lg">{TOAST_MESSAGES.entry.description}</Text>
               <CloseButton onClick={onClose} />
             </Box>
           ),
@@ -162,30 +162,31 @@ const Agenda = () => {
   };
 
   return (
-    <Box bg="tertiary" color="white" borderColor="white" m={4} p={4} borderRadius="10px">
+    <Box bg="tertiary" color="secondary" borderColor="white" m={4} p={4} borderRadius="10px">
       <Box display="flex" mb={2}>
-        <Box width="70px" bg="tertiary" p={2} ml={2}></Box>
+        <Box width="70px" bg="tertiary" p={2} mr={2}></Box>
         {days.map((day, idx) => (
-          <Box flex="1" bg="tertiary" p={2} key={idx} ml={1} borderRadius="md">
-            <Text color="white" fontSize="xl">{day}</Text>
+          <Box flex="1" bg="quinary" p={2} key={idx} mr={idx !== days.length - 1 ? 2 : 0} borderRadius="md">
+            <Text color="secondary" fontSize="xl">{day}</Text>
           </Box>
         ))}
       </Box>
       {hours.map((hour, idx) => (
         <Box display="flex" key={idx} mb={4}>
-          <Box width="70px" bg="tertiary" p={2} borderRadius="md">
-            <Text color="white">
+          <Box width="70px" bg="quinary" p={2} mr={2} borderRadius="md">
+            <Text color="secondary">
               <DigitalClock hour={hour} />
             </Text>
           </Box>
           {days.map((day, idx) => (
             <Box
               flex="1"
-              borderColor="quaternary"
-              borderWidth="1px"
+              borderColor="secondary"
+              borderWidth="2px"
+              boxShadow="md"
               p={2}
               key={idx}
-              ml={4}
+              mr={idx !== days.length - 1 ? 2 : 0}
               borderRadius="md"
               minHeight="120px"
               onClick={() => handleCellClick(day, hour)}

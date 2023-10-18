@@ -22,14 +22,14 @@ const typing = keyframes`
 
 const blinkingCursor = keyframes`
   from, to { border-color: transparent; }
-  50% { border-color: orange; }
+  50% { border-color: #15b9fe; }
 `;
 
 const typingStyles = css`
   width: 0;
   white-space: nowrap;
   overflow: hidden;
-  border-right: .15em solid orange;
+  border-right: .15em solid #15b9fe;
   animation: ${typing} 4s steps(40, end), ${blinkingCursor} 0.5s step-end infinite;
   animation-fill-mode: forwards;
 `;
@@ -49,19 +49,19 @@ const EntryModal = ({ isOpen, onClose }) => {
             <Text fontWeight="bold" color="black" mb={2}>Benefits:</Text>
             <List spacing={2}>
               <ListItem>
-                <ListIcon as={CheckIcon} color="orange"/>
+                <ListIcon as={CheckIcon} color="#15b9fe"/>
                 Unique life coaching
               </ListItem>
               <ListItem>
-                <ListIcon as={CheckIcon} color="orange"/>
+                <ListIcon as={CheckIcon} color="#15b9fe"/>
                 Personalized recommendations
               </ListItem>
               <ListItem>
-                <ListIcon as={CheckIcon} color="orange"/>
+                <ListIcon as={CheckIcon} color="#15b9fe"/>
                 A customizable diary
               </ListItem>
               <ListItem>
-                <ListIcon as={CheckIcon} color="orange"/>
+                <ListIcon as={CheckIcon} color="#15b9fe"/>
                 A free experience
               </ListItem>
             </List>

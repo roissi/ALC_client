@@ -1,11 +1,20 @@
 import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
+  breakpoints: {
+    sm: "480px",
+    md: "768px",
+    lg: "992px",
+    xl: "1280px",
+    "2xl": "1536px",
+  },
   colors: {
-    primary: "#202123",
-    secondary: "#343440",
-    tertiary: "#424552",
-    quaternary: "#a9b1bb",
+    primary: "#ffffff",
+    secondary: "#002136",
+    tertiary: "#f7fafc",
+    quaternary: "#15b9fe",
+    quinary: "#bbd5ec",
+    senary: "#a0aec0",
     white: "#ffffff",
     error: "red.500",
   },
@@ -15,24 +24,13 @@ const theme = extendTheme({
         borderRadius: "md",
       },
     },
-    Button: {
-      variants: {
-        "color-scheme": "teal",
-      },
-    },
     Text: {
       baseStyle: {
-        color: "white",
+        color: "#002136",
       },
     },
     Textarea: {
       baseStyle: {
-        size: "sm",
-        resize: "none",
-        rows: "6",
-        border: "none",
-        outline: "none",
-        boxShadow: "none",
         overflow: "hidden",
         whiteSpace: "pre-wrap",
         wordBreak: "break-word",

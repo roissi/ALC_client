@@ -48,9 +48,9 @@ export default function LoginModal() {
           position: "top-right",
           isClosable: true,
           render: ({ onClose }) => (
-            <Box color="black" p={3} bg="#ffc107" borderRadius="md">
-              <Text color="black" fontSize="xl">{TOAST_MESSAGES.login.title}</Text>
-              <Text color="black" fontSize="lg">{TOAST_MESSAGES.login.description}</Text>
+            <Box color="primary" p={3} bg="quaternary" borderRadius="md">
+              <Text color="primary" fontSize="xl">{TOAST_MESSAGES.login.title}</Text>
+              <Text color="primary" fontSize="lg">{TOAST_MESSAGES.login.description}</Text>
               <CloseButton onClick={onClose} />
             </Box>
           ),
@@ -66,10 +66,10 @@ export default function LoginModal() {
   return (
     <>
       <Button 
-        bg="white" 
-        color="black" 
-        _hover={{ bg: "#ffc107" }} 
-        _active={{ bg: "#ffc107" }}
+        bg="quaternary" 
+        color="tertiary" 
+        _hover={{ bg: "quinary" }} 
+        _active={{ bg: "quinary" }}
         onClick={onOpen}
       >
         Login
@@ -107,10 +107,10 @@ export default function LoginModal() {
 
           <ModalFooter>
             <Button 
-              bg="#ffcf25" 
-              color="black" 
-              _hover={{ bg: "#ffc107" }} 
-              _active={{ bg: "#ffc107" }}
+              bg="quaternary" 
+              color="tertiary" 
+              _hover={{ bg: "quinary" }} 
+              _active={{ bg: "quinary" }}
               onClick={handleSubmit}
             >
               Login

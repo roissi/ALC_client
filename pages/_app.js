@@ -1,9 +1,8 @@
 import * as React from "react";
 import { ChakraProvider } from "@chakra-ui/react";
-import { extendTheme } from '@chakra-ui/react';
+import theme from "../themes/theme";
 import Layout from '../components/Layout';
 import '../styles/globals.css';
-import theme from "../theme";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCalendarDays, faThumbsUp, faComments } from '@fortawesome/free-solid-svg-icons';
 
