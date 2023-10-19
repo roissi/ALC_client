@@ -33,9 +33,13 @@ export const TOAST_MESSAGES = {
       title: 'ERROR',
       description: 'Please select at least one interest and one need, and indicate a duration (in days) for your need.'
     },
-    problem: {
+    problemInterests: {
       title: 'OUPS, BAD ISSUE',
       description: 'An error occurred while saving your choices.'
+    },
+    problemAgenda: {
+      title: 'OUPS, BAD ISSUE',
+      description: 'An error occurred while adding the entry. Try Again.'
     },
     SugAddedError: {
       title: 'OUPS, BAD ISSUE',

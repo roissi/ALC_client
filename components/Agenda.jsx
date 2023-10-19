@@ -109,6 +109,18 @@ const Agenda = () => {
   
     } catch (error) {
       console.error("Could not add entry:", error);
+      toast({
+        duration: 6000,
+        position: "top-right",
+        isClosable: true,
+        render: ({ onClose }) => (
+          <Box color="primary" p={3} bg="error" borderRadius="md">
+            <Text color="primary" fontSize="xl">{TOAST_MESSAGES.problemAgenda.title}</Text>
+            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.problemAgenda.description}</Text>
+            <CloseButton onClick={onClose} />
+          </Box>
+        )
+      });
     }
   };
   

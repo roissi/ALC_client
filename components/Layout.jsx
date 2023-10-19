@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Box, Heading, Flex, Button, Avatar, useDisclosure, Image } from "@chakra-ui/react";
+import { Box, Heading, Flex, Button, Avatar, useDisclosure, Image, useBreakpointValue } from "@chakra-ui/react";
 import SignUpModal from "./SignUpModal";
 import LoginModal from "./LoginModal";
 import EntryModal from "./EntryModal";
@@ -13,7 +13,14 @@ export function useAuth() {
 export default function Layout({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
-  const { isOpen, onOpen, onClose } = useDisclosure(); 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const headingSize = useBreakpointValue({ base: "xl", md: "xl", lg: "xl", xl: "2xl", "2xl": "2xl" });
+  const flexDirection = useBreakpointValue({ base: "column", md: "row", lg: "row" });
+  const justifyContent = useBreakpointValue({ base: "center", md: "space-between", lg: "space-between" });
+  const alignItems = useBreakpointValue({ base: "center", lg: "center" });
+  const isSmOrMd = useBreakpointValue({ base: true, md: true, lg: false });
+
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -40,19 +47,28 @@ export default function Layout({ children }) {
           bg="primary"
           color="primary"
           p={4}
-          justify="space-between"
-          align="center"
+          flexDirection={flexDirection}
+          justifyContent={justifyContent}
+          alignItems={alignItems}
         >
-          <Flex align="center">
+          <Flex align="center" mb={{ base: 4, md: 4, lg: 0 }}>
             <Image src="/img/logo_ALC_def.png" alt="Logo ALC" width="200px" mr={4} />
-              <Heading color="secondary" size={["sm", "md", "lg", "xl", "2xl"]}>Artificial Life Coach</Heading>
+            <Heading color="secondary" size={headingSize}>
+              {isSmOrMd ? (
+                <>
+                  Artificial <br /> Life Coach
+                </>
+              ) : (
+                "Artificial Life Coach"
+              )}
+            </Heading>
           </Flex>
           <Flex>
             {!isLoggedIn ? (
               <>
-            <Box mr={4} borderRadius="md">
-              <SignUpModal setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />
-            </Box>
+                <Box mr={4} borderRadius="md">
+                  <SignUpModal setIsLoggedIn={setIsLoggedIn} setUserId={setUserId} />
+                </Box>
                 <LoginModal />
               </>
             ) : (
@@ -78,7 +94,7 @@ export default function Layout({ children }) {
         <Box as="main" borderRadius="md" p={4}>
           {React.cloneElement(children, { isLoggedIn, userId })}
         </Box>
-        </Box>
+      </Box>
     </AuthContext.Provider>
   );
 }

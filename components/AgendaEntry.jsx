@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Textarea, Button, Tooltip, Flex, Image } from '@chakra-ui/react';
+import { Textarea, Button, Tooltip, Flex, Image, useBreakpointValue } from '@chakra-ui/react';
 import { useAuth } from './Layout';
 import { markSuggestionAsRemovedFromAgenda } from '../services/api';
 
@@ -11,6 +11,9 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
   const descriptionRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const flexDirection = useBreakpointValue({ base: "column", md: "row" });
+  const alignItems = useBreakpointValue({ base: "flex-start", md: "center" });
+  
 
   useEffect(() => {
     if (descriptionRef.current) {
@@ -44,7 +47,7 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
   return (
     <>
       {entry?.title === 'COACH SUGGESTION' ? (
-    <Flex alignItems="center">
+    <Flex direction={flexDirection} alignItems={alignItems}>
         <Image src="/img/brain_light.png" alt="Brain" boxSize="30px" ml={3} mr={-2} />
         <Textarea
           value='FROM COACH'
