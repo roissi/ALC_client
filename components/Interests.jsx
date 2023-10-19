@@ -140,8 +140,8 @@ const Interests = () => {
         isClosable: true,
         render: ({ onClose }) => (
           <Box color="primary" p={3} bg="error" borderRadius="md">
-            <Text color="primary" fontSize="xl">{TOAST_MESSAGES.problem.title}</Text>
-            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.problem.description}</Text>
+            <Text color="primary" fontSize="xl">{TOAST_MESSAGES.problemInterests.title}</Text>
+            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.problemInterests.description}</Text>
             <CloseButton onClick={onClose} />
           </Box>
         )

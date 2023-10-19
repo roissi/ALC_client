@@ -135,7 +135,8 @@ const deleteSuggestionHandler = async (suggestionId) => {
         focusBorderColor="#15b9fe"
         sx={{
           "::placeholder": {
-            color: "quinary"
+            color: "quinary",
+            fontSize: "2em"
           }
         }}
       />
