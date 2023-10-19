@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Heading, Flex, CheckboxGroup, Checkbox, Input, Button, Stack, Text, Grid, CloseButton, useToast } from '@chakra-ui/react';
+import { Box, Heading, Flex, CheckboxGroup, Checkbox, Input, Button, Stack, Text, Grid, CloseButton, useToast, useBreakpointValue } from '@chakra-ui/react';
 import {
   fetchAllInterestsAndNeeds,
   saveUserInterests,
@@ -21,6 +21,14 @@ const Interests = () => {
   const [isEditable, setIsEditable] = useState(false);
   const [choicesMade, setChoicesMade] = useState(false);
   const { onOpen } = useAuth();
+
+  const gridTemplateColumns = useBreakpointValue({
+    base: "1fr",   // 1 colonne pour les tailles base et sm
+    sm: "1fr",
+    md: "1fr 1fr", // 2 colonnes pour md, lg et xl
+    lg: "1fr 1fr",
+    xl: "1fr 1fr"
+  });
 
   useEffect(() => {
     setIsEditable(isLoggedIn);
@@ -151,7 +159,7 @@ const Interests = () => {
 
 return (
     <Box bg="tertiary" color="secondary" m={4} p={4} borderRadius="10px">
-      <Grid templateColumns="1fr 1fr" gap={8} bg="tertiary" p={3} borderRadius="10px">
+       <Grid templateColumns={gridTemplateColumns} gap={8} bg="tertiary" p={3} borderRadius="10px">
         <Box bg="tertiary" p={8} borderRadius="10px" border="2px solid #002136" boxShadow="md">
           <Heading as="h2" size="md" mb={6}>
             Select your interests :

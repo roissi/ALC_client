@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 import AgendaForm from './AgendaForm';
 import AgendaEntry from './AgendaEntry';
-import { Box, Text, useToast, CloseButton } from "@chakra-ui/react";
+import { Box, Text, useToast, CloseButton, useBreakpointValue, IconButton } from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { createAgendaEntry, fetchAgendaEntries, updateAgendaEntry, deleteAgendaEntry } from '../services/api';
 import { useAuth } from './Layout';
 import { TOAST_MESSAGES } from './toastMessages';
@@ -13,10 +14,21 @@ const Agenda = () => {
   const [isEditable, setIsEditable] = useState(isLoggedIn);
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const hours = Array.from({ length: 12 }, (_, i) => i + 8);
+  const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl' });
+  const [currentDayIndex, setCurrentDayIndex] = useState(0);
+  const isSingleDayView = breakpoint === 'sm' || breakpoint === 'md';
   
   const [selectedCell, setSelectedCell] = useState(null);
   const [agendaEntries, setAgendaEntries] = useState({});
   const [firstEntryAdded, setFirstEntryAdded] = useState(false);
+
+  const handlePreviousDay = () => {
+    setCurrentDayIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 6));
+  };
+
+  const handleNextDay = () => {
+    setCurrentDayIndex((prevIndex) => (prevIndex < 6 ? prevIndex + 1 : 0));
+  };
 
   useEffect(() => {
     setIsEditable(isLoggedIn);
@@ -175,14 +187,23 @@ const Agenda = () => {
 
   return (
     <Box bg="tertiary" color="secondary" borderColor="white" m={4} p={4} borderRadius="10px">
-      <Box display="flex" mb={2}>
-        <Box width="70px" bg="tertiary" p={2} mr={2}></Box>
-        {days.map((day, idx) => (
-          <Box flex="1" bg="quinary" p={2} key={idx} mr={idx !== days.length - 1 ? 2 : 0} borderRadius="md">
-            <Text color="secondary" fontSize="xl">{day}</Text>
-          </Box>
-        ))}
+      {isSingleDayView && (
+        <Box display="flex" justifyContent="center" alignItems="center" mb={4}>
+          <IconButton icon={<ChevronLeftIcon />} onClick={handlePreviousDay} aria-label="Previous Day" />
+          <Text mx={4} fontSize="xl">{days[currentDayIndex]}</Text>
+          <IconButton icon={<ChevronRightIcon />} onClick={handleNextDay} aria-label="Next Day" />
+        </Box>
+      )}
+{!isSingleDayView && (
+  <Box display="flex" mb={2}>
+    <Box width="70px" bg="tertiary" p={2} mr={2}></Box>
+    {days.map((day, idx) => (
+      <Box flex="1" bg="quinary" p={2} key={idx} mr={idx !== days.length - 1 ? 2 : 0} borderRadius="md">
+        <Text color="secondary" fontSize="xl">{day}</Text>
       </Box>
+    ))}
+  </Box>
+)}
       {hours.map((hour, idx) => (
         <Box display="flex" key={idx} mb={4}>
           <Box width="70px" bg="quinary" p={2} mr={2} borderRadius="md">
@@ -191,6 +212,7 @@ const Agenda = () => {
             </Text>
           </Box>
           {days.map((day, idx) => (
+            (!isSingleDayView || idx === currentDayIndex) && (
             <Box
               flex="1"
               borderColor="secondary"
@@ -220,10 +242,12 @@ const Agenda = () => {
                 />
               )}
             </Box>
-          ))}
-        </Box>
-      ))}
-    </Box>
+              )
+            ))}
+          </Box>
+        ))}
+      </Box>
+
   );
 };
 
