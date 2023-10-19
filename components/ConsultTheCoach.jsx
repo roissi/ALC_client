@@ -136,7 +136,7 @@ const deleteSuggestionHandler = async (suggestionId) => {
         sx={{
           "::placeholder": {
             color: "quinary",
-            fontSize: "2em"
+            fontSize: { base: "1em", md: "2em" }
           }
         }}
       />

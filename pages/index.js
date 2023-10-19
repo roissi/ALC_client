@@ -60,7 +60,7 @@ export default function Home() {
                 color={currentView === 'agenda' ? 'quaternary' : 'white'}
                 _hover={{ color: "quinary" }}
                 onClick={() => setCurrentView('agenda')}
-                mx={3}
+                mx={{ lg: 5, xl:10 }}
               >
                 My amazing week
               </Heading>
@@ -70,7 +70,7 @@ export default function Home() {
                 color={currentView === 'interests' ? 'quaternary' : 'white'}
                 _hover={{ color: "quinary" }}
                 onClick={() => setCurrentView('interests')}
-                mx={3}
+                mx={{ lg: 5, xl:10 }}
               >
                 My interests
               </Heading>
@@ -80,7 +80,7 @@ export default function Home() {
                 color={currentView === 'coach' ? 'quaternary' : 'white'}
                 _hover={{ color: "quinary" }}
                 onClick={() => setCurrentView('coach')}
-                mx={3}
+                mx={{ lg: 5, xl:10 }}
               >
                 <FontAwesomeIcon icon="comments" beatFade style={{ marginRight: "15px" }} />
                 Consult the coach
