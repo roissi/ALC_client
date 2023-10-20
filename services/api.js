@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:4500';
+const API_URL = 'https://artificial-life-coach-c51d3462ed92.herokuapp.com/';
+// const API_URL = 'http://localhost:4500';
 
 // Créer une instance Axios avec des paramètres de base
 const api = axios.create({
