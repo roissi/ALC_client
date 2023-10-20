@@ -16,7 +16,7 @@ const Agenda = () => {
   const hours = Array.from({ length: 12 }, (_, i) => i + 8);
   const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl' });
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
-  const isSingleDayView = breakpoint === 'sm' || breakpoint === 'md';
+  const isSingleDayView = breakpoint === 'base' || breakpoint === 'sm' || breakpoint === 'md';
   
   const [selectedCell, setSelectedCell] = useState(null);
   const [agendaEntries, setAgendaEntries] = useState({});

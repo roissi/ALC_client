@@ -12,7 +12,7 @@ export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const headingSize = useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg', xl: 'xl' });
+  const headingSize = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl' });
   const displayMenu = useBreakpointValue({ base: 'none', md: 'none', lg: 'flex', xl: 'flex' });
   const displayButton = useBreakpointValue({ base: 'block', md: 'block', lg: 'none', xl: 'none' });
   const footerDirection = useBreakpointValue({ base: 'column', md: 'column', lg: 'row' });
