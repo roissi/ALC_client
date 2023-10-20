@@ -17,6 +17,11 @@ const Agenda = () => {
   const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl' });
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const isSingleDayView = breakpoint === 'base' || breakpoint === 'sm' || breakpoint === 'md';
+  const entryBoxFlex = useBreakpointValue({ base: "1.5", sm: "1", md: "1", lg: "1", xl: "1" });
+  const entryBoxWidth = useBreakpointValue({ base: "calc(100% - 10px)", sm: "flex", md: "flex", lg: "flex", xl: "flex" });
+  const entryBoxMargin = isSingleDayView ? { mr: 0, mb: 0 } : { mr: idx !== days.length - 1 ? 2 : 0, mb: 4 };
+
+
   
   const [selectedCell, setSelectedCell] = useState(null);
   const [agendaEntries, setAgendaEntries] = useState({});
@@ -65,11 +70,20 @@ const Agenda = () => {
   }, [isLoggedIn]);
 
   const DigitalClock = ({ hour }) => {
-    return (
-      <span style={{ fontFamily: 'Digital-7 Mono, monospace', fontSize: '1.2em' }}>
-        {hour < 12 ? `${hour}:00 AM` : `${hour - 12}:00 PM`}
-      </span>
-    );
+    if (breakpoint === 'base') {
+      return (
+        <span style={{ fontFamily: 'Digital-7 Mono, monospace', fontSize: '1.2em' }}>
+          {hour < 12 ? `${hour}` : `${hour - 12}`}<br/>
+          {hour < 12 ? `AM` : `PM`}
+        </span>
+      );
+    } else {
+      return (
+        <span style={{ fontFamily: 'Digital-7 Mono, monospace', fontSize: '1.2em' }}>
+          {hour < 12 ? `${hour}:00 AM` : `${hour - 12}:00 PM`}
+        </span>
+      );
+    }
   };
 
   const handleCellClick = (day, hour) => {
@@ -206,7 +220,7 @@ const Agenda = () => {
 )}
       {hours.map((hour, idx) => (
         <Box display="flex" key={idx} mb={4}>
-          <Box width="70px" bg="quinary" p={2} mr={2} borderRadius="md">
+          <Box width={breakpoint === 'base' ? "40px" : "70px"} bg="quinary" p={2} mr={2} borderRadius="md">
             <Text color="secondary">
               <DigitalClock hour={hour} />
             </Text>
@@ -214,13 +228,14 @@ const Agenda = () => {
           {days.map((day, idx) => (
             (!isSingleDayView || idx === currentDayIndex) && (
             <Box
-              flex="1"
+              width={entryBoxWidth}
+              flex={entryBoxFlex}
               borderColor="secondary"
               borderWidth="2px"
               boxShadow="md"
               p={2}
               key={idx}
-              mr={idx !== days.length - 1 ? 2 : 0}
+              {...entryBoxMargin}
               borderRadius="md"
               minHeight="120px"
               onClick={() => handleCellClick(day, hour)}
