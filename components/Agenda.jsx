@@ -19,7 +19,6 @@ const Agenda = () => {
   const isSingleDayView = breakpoint === 'base' || breakpoint === 'sm' || breakpoint === 'md';
   const entryBoxFlex = useBreakpointValue({ base: "1.5", sm: "1", md: "1", lg: "1", xl: "1" });
   const entryBoxWidth = useBreakpointValue({ base: "calc(100% - 10px)", sm: "flex", md: "flex", lg: "flex", xl: "flex" });
-  const entryBoxMargin = isSingleDayView ? { mr: 0, mb: 0 } : { mr: idx !== days.length - 1 ? 2 : 0, mb: 4 };
 
 
   
@@ -235,7 +234,8 @@ const Agenda = () => {
               boxShadow="md"
               p={2}
               key={idx}
-              {...entryBoxMargin}
+              mr={!isSingleDayView && idx !== days.length - 1 ? 2 : 0}
+              mb={isSingleDayView ? 0 : 4}
               borderRadius="md"
               minHeight="120px"
               onClick={() => handleCellClick(day, hour)}
