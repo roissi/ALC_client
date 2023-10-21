@@ -4,14 +4,17 @@ import theme from "../themes/theme";
 import Layout from '../components/Layout';
 import '../styles/globals.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCalendarDays, faThumbsUp, faComments } from '@fortawesome/free-solid-svg-icons';
+import { faComments } from '@fortawesome/free-solid-svg-icons';
+import Head from 'next/head';
 
-// Ajoutez les icônes à la bibliothèque pour une utilisation globale
-library.add(faCalendarDays, faThumbsUp, faComments);
+library.add(faComments);
 
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <Layout>
         <Component {...pageProps} />
       </Layout>

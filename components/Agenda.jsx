@@ -20,8 +20,6 @@ const Agenda = () => {
   const entryBoxFlex = useBreakpointValue({ base: "1.5", sm: "1", md: "1", lg: "1", xl: "1" });
   const entryBoxWidth = useBreakpointValue({ base: "calc(100% - 10px)", sm: "flex", md: "flex", lg: "flex", xl: "flex" });
 
-
-  
   const [selectedCell, setSelectedCell] = useState(null);
   const [agendaEntries, setAgendaEntries] = useState({});
   const [firstEntryAdded, setFirstEntryAdded] = useState(false);
@@ -207,16 +205,16 @@ const Agenda = () => {
           <IconButton icon={<ChevronRightIcon />} onClick={handleNextDay} aria-label="Next Day" />
         </Box>
       )}
-{!isSingleDayView && (
-  <Box display="flex" mb={2}>
-    <Box width="70px" bg="tertiary" p={2} mr={2}></Box>
-    {days.map((day, idx) => (
-      <Box flex="1" bg="quinary" p={2} key={idx} mr={idx !== days.length - 1 ? 2 : 0} borderRadius="md">
-        <Text color="secondary" fontSize="xl">{day}</Text>
+  {!isSingleDayView && (
+    <Box display="flex" mb={2}>
+      <Box width="70px" bg="tertiary" p={2} mr={2}></Box>
+      {days.map((day, idx) => (
+        <Box flex="1" bg="quinary" p={2} key={idx} mr={idx !== days.length - 1 ? 2 : 0} borderRadius="md">
+          <Text color="secondary" fontSize="xl">{day}</Text>
+        </Box>
+      ))}
       </Box>
-    ))}
-  </Box>
-)}
+      )}
       {hours.map((hour, idx) => (
         <Box display="flex" key={idx} mb={4}>
           <Box width={breakpoint === 'base' ? "40px" : "70px"} bg="quinary" p={2} mr={2} borderRadius="md">
@@ -224,8 +222,8 @@ const Agenda = () => {
               <DigitalClock hour={hour} />
             </Text>
           </Box>
-          {days.map((day, idx) => (
-            (!isSingleDayView || idx === currentDayIndex) && (
+      {days.map((day, idx) => (
+        (!isSingleDayView || idx === currentDayIndex) && (
             <Box
               width={entryBoxWidth}
               flex={entryBoxFlex}
@@ -240,21 +238,21 @@ const Agenda = () => {
               minHeight="120px"
               onClick={() => handleCellClick(day, hour)}
             >
-              {selectedCell && selectedCell.day === day && selectedCell.hour === hour ? (
-                <AgendaForm 
-                  day={selectedCell.day} 
-                  hour={selectedCell.hour} 
-                  onEntryCreated={(newEntry) => handleAgendaEntry(newEntry.day, newEntry.hour, newEntry)}
-                  isEditable={isEditable}
-                />
-              ) : (
-                <AgendaEntry 
-                  day={day} 
-                  hour={hour}
-                  agendaEntries={agendaEntries} 
-                  deleteEntry={deleteEntry} 
-                  isEditable={isEditable}
-                />
+            {selectedCell && selectedCell.day === day && selectedCell.hour === hour ? (
+            <AgendaForm 
+              day={selectedCell.day} 
+              hour={selectedCell.hour} 
+              onEntryCreated={(newEntry) => handleAgendaEntry(newEntry.day, newEntry.hour, newEntry)}
+              isEditable={isEditable}
+            />
+          ) : (
+            <AgendaEntry 
+              day={day} 
+              hour={hour}
+              agendaEntries={agendaEntries} 
+              deleteEntry={deleteEntry} 
+              isEditable={isEditable}
+            />
               )}
             </Box>
               )
@@ -262,7 +260,6 @@ const Agenda = () => {
           </Box>
         ))}
       </Box>
-
   );
 };
 

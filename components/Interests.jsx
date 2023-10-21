@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Heading, Flex, CheckboxGroup, Checkbox, Input, Button, Stack, Text, Grid, CloseButton, useToast, useBreakpointValue } from '@chakra-ui/react';
-import {
-  fetchAllInterestsAndNeeds,
-  saveUserInterests,
-  getUserInterests,
-  updateUserInterests,
-  deleteUserInterests
-} from '../services/api';
+import { fetchAllInterestsAndNeeds, saveUserInterests, getUserInterests, updateUserInterests, deleteUserInterests } from '../services/api';
 import { useAuth } from './Layout';
 import { TOAST_MESSAGES } from './toastMessages';
 
@@ -23,9 +17,9 @@ const Interests = () => {
   const { onOpen } = useAuth();
 
   const gridTemplateColumns = useBreakpointValue({
-    base: "1fr",   // 1 colonne pour les tailles base et sm
+    base: "1fr",
     sm: "1fr",
-    md: "1fr 1fr", // 2 colonnes pour md, lg et xl
+    md: "1fr 1fr",
     lg: "1fr 1fr",
     xl: "1fr 1fr"
   });
@@ -48,10 +42,7 @@ const Interests = () => {
         console.error("Erreur lors de la récupération des données", error);
       }
     };
-
-    // if (isLoggedIn) {
       fetchAllData();
-    // }
   }, [isLoggedIn]);
 
   useEffect(() => {
@@ -65,10 +56,9 @@ const Interests = () => {
           setSelectedInterests(interests.map(interest => interest.interest_id));
           setSelectedNeedsWithDuration(needs.map(need => ({ need: need.interest_id, duration: need.duration })));
   
-          // Mise à jour de selectedNeedsMap
           const newSelectedNeedsMap = {};
           needs.forEach((need) => {
-            newSelectedNeedsMap[need.interest_id] = true; // Assurez-vous que c'est la bonne clé
+            newSelectedNeedsMap[need.interest_id] = true;
           });
           setSelectedNeedsMap(newSelectedNeedsMap);
   
