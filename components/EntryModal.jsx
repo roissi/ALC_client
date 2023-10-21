@@ -36,12 +36,7 @@ const typingStyles = css`
 `;
 
 const EntryModal = ({ isOpen, onClose }) => {
-  const whitespaceValue = useBreakpointValue({ base: "normal", md: "nowrap" });
-
-  const adjustedTypingStyles = css`
-  ${typingStyles};
-  white-space: ${whitespaceValue};
-`;
+  const isSmallScreen = useBreakpointValue({ base: true, md: false });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -76,7 +71,7 @@ const EntryModal = ({ isOpen, onClose }) => {
           </Box>
         </ModalBody>
         <ModalFooter justifyContent="flex-start">
-          <Text color="black" css={adjustedTypingStyles} fontWeight="bold">
+          <Text color="black" css={isSmallScreen ? undefined : typingStyles} fontWeight="bold">
             Ready to take the next step in your personal growth journey?
           </Text>
         </ModalFooter>
