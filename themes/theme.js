@@ -9,6 +9,10 @@ const theme = extendTheme({
     xl: "1280px",
     "2xl": "1536px",
   },
+  fonts: {
+    body: "'Segoe UI', system-ui, sans-serif",
+    heading: "'Segoe UI', system-ui, sans-serif",
+  },
   colors: {
     primary: "#ffffff",
     secondary: "#002136",

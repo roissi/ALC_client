@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useBreakpointValue, Heading, Flex, Link, Text, Image, IconButton, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerBody } from "@chakra-ui/react";
+import { useBreakpointValue, Heading, Flex, Link, Text, Image, IconButton, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerBody } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Agenda from '../components/Agenda';
 import Interests from '../components/Interests';

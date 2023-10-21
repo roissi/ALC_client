@@ -1,3 +1,4 @@
+import { useBreakpointValue } from "@chakra-ui/react";
 import {
   Modal,
   ModalOverlay,
@@ -35,6 +36,13 @@ const typingStyles = css`
 `;
 
 const EntryModal = ({ isOpen, onClose }) => {
+  const whitespaceValue = useBreakpointValue({ base: "normal", md: "nowrap" });
+
+  const adjustedTypingStyles = css`
+  ${typingStyles};
+  white-space: ${whitespaceValue};
+`;
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
@@ -68,7 +76,7 @@ const EntryModal = ({ isOpen, onClose }) => {
           </Box>
         </ModalBody>
         <ModalFooter justifyContent="flex-start">
-          <Text color="black" css={typingStyles} fontWeight="bold">
+          <Text color="black" css={adjustedTypingStyles} fontWeight="bold">
             Ready to take the next step in your personal growth journey?
           </Text>
         </ModalFooter>

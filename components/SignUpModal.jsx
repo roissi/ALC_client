@@ -1,24 +1,6 @@
 import React, { useState } from "react";
 import { signUp } from "../services/api";
-import {
-  Avatar,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Text,
-  useDisclosure,
-  useToast,
-  Box,
-  CloseButton
-} from "@chakra-ui/react";
+import { Avatar, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Text, useDisclosure, useToast, Box, CloseButton } from "@chakra-ui/react";
 import { TOAST_MESSAGES } from './toastMessages';
 
 export default function SignUpModal({ setIsLoggedIn, setUserId }) {
@@ -98,7 +80,7 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
           <ModalHeader>Sign Up</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {errorMessage && <Text color="red.500">{errorMessage}</Text>}  {/* Affichage du message d'erreur */}
+            {errorMessage && <Text color="red.500">{errorMessage}</Text>}
             <FormControl id="username">
               <FormLabel>Username</FormLabel>
               <Input

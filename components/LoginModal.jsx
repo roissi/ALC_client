@@ -1,23 +1,6 @@
 import React, { useState } from "react";
 import { login } from "../services/api";
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Text,
-  useDisclosure,
-  useToast,
-  Box,
-  CloseButton
-} from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Text, useDisclosure, useToast, Box, CloseButton } from "@chakra-ui/react";
 import { useAuth } from './Layout';
 import { TOAST_MESSAGES } from './toastMessages';
 
