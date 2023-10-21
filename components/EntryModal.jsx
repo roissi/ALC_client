@@ -49,19 +49,19 @@ const EntryModal = ({ isOpen, onClose }) => {
             <Text fontWeight="bold" color="black" mb={2}>Benefits:</Text>
             <List spacing={2}>
               <ListItem>
-                <ListIcon as={CheckIcon} color="#15b9fe"/>
+                <ListIcon as={CheckIcon} color="quaternary"/>
                 Unique life coaching
               </ListItem>
               <ListItem>
-                <ListIcon as={CheckIcon} color="#15b9fe"/>
+                <ListIcon as={CheckIcon} color="quaternary"/>
                 Personalized recommendations
               </ListItem>
               <ListItem>
-                <ListIcon as={CheckIcon} color="#15b9fe"/>
+                <ListIcon as={CheckIcon} color="quaternary"/>
                 A customizable diary
               </ListItem>
               <ListItem>
-                <ListIcon as={CheckIcon} color="#15b9fe"/>
+                <ListIcon as={CheckIcon} color="quaternary"/>
                 A free experience
               </ListItem>
             </List>
