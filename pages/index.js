@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useBreakpointValue, Heading, Flex, Link, Text, Image, IconButton, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerBody } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useBreakpointValue, Heading, Flex, Link, Text, Image, IconButton, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerBody } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import Agenda from '../components/Agenda';
 import Interests from '../components/Interests';
 import ConsultTheCoach from '../components/ConsultTheCoach';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import GradientBox from '../themes/animations.js'; 
+import GradientBox from '../themes/animations.js';
+import LegalNoticesModal from '../components/LegalNotices';
+import PrivacyPolicyModal from '../components/PrivacyPolicy';
 
 export default function Home() {
   const [currentView, setCurrentView] = useState('agenda');
   const [isClient, setIsClient] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLegalNoticesOpen, setIsLegalNoticesOpen] = useState(false);
+  const openLegalNotices = () => setIsLegalNoticesOpen(true);
+  const closeLegalNotices = () => setIsLegalNoticesOpen(false);
+  const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
+  const openPrivacyPolicy = () => setIsPrivacyPolicyOpen(true);
+  const closePrivacyPolicy = () => setIsPrivacyPolicyOpen(false);
 
   const headingSize = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl' });
   const displayMenu = useBreakpointValue({ base: 'none', md: 'none', lg: 'flex', xl: 'flex' });
@@ -103,14 +111,33 @@ export default function Home() {
   borderRadius="md"
   mt={1}
 >
-  <Link isExternal textDecoration="none" _hover={{ textDecoration: "none" }} color="white" mx={footerSpacing} my={footerItemSpacing}>À propos</Link>
-  <Link isExternal textDecoration="none" _hover={{ textDecoration: "none" }} color="white" mx={footerSpacing} my={footerItemSpacing}>Contacts</Link>
-  <Link isExternal textDecoration="none" _hover={{ textDecoration: "none" }} color="white" mx={footerSpacing} my={footerItemSpacing}>Mentions Légales</Link>
-  <Link isExternal textDecoration="none" _hover={{ textDecoration: "none" }} color="white" mx={footerSpacing} my={footerItemSpacing}>Politique de confidentialité</Link>
+  <Link
+    href="https://portfolio-roissi.vercel.app/"
+    isExternal textDecoration="none"
+    _hover={{ textDecoration: "none" }}
+    color="white"
+    mx={footerSpacing}
+    my={footerItemSpacing}>
+      About
+  </Link>
+  <Link
+    href="https://www.linkedin.com/in/cyril-de-graeve/"
+    isExternal
+    textDecoration="none"
+    _hover={{ textDecoration: "none" }}
+    color="white"
+    mx={footerSpacing}
+    my={footerItemSpacing}>
+      Contact
+    </Link>
+    <Link onClick={openLegalNotices} textDecoration="none" _hover={{ textDecoration: "none" }} color="white" mx={footerSpacing} my={footerItemSpacing}>Legal Notices</Link>
+    <Link onClick={openPrivacyPolicy} textDecoration="none" _hover={{ textDecoration: "none" }} color="white" mx={footerSpacing} my={footerItemSpacing}>Privacy Policy</Link>
   <Image src="/img/brain_dark.png" alt="Logo ALC" width={imageSize} mr={imageSpacing} my={footerItemSpacingImg}/>
   <Text fontSize="md" color="white">&copy; roissi / 2023</Text>
 </Flex>
 
+<LegalNoticesModal isOpen={isLegalNoticesOpen} onClose={closeLegalNotices} />
+<PrivacyPolicyModal isOpen={isPrivacyPolicyOpen} onClose={closePrivacyPolicy} />
 
 </GradientBox>
 );
