@@ -29,7 +29,7 @@ const Agenda = () => {
     const currentDayIndex = currentDate.getDay() - 1;
     const difference = dayIndex - currentDayIndex;
     const targetDate = new Date(currentDate.setDate(currentDate.getDate() + difference));
-    return `${targetDate.getMonth() + 1}.${targetDate.getDate()}`;
+    return `${targetDate.getDate()}`;
   };
 
   const handlePreviousDay = () => {
