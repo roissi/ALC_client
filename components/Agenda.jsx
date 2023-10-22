@@ -24,6 +24,14 @@ const Agenda = () => {
   const [agendaEntries, setAgendaEntries] = useState({});
   const [firstEntryAdded, setFirstEntryAdded] = useState(false);
 
+  const getDateForDay = (dayIndex) => {
+    const currentDate = new Date();
+    const currentDayIndex = currentDate.getDay() - 1;
+    const difference = dayIndex - currentDayIndex;
+    const targetDate = new Date(currentDate.setDate(currentDate.getDate() + difference));
+    return `${targetDate.getMonth() + 1}.${targetDate.getDate()}`;
+  };
+
   const handlePreviousDay = () => {
     setCurrentDayIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 6));
   };
@@ -201,7 +209,7 @@ const Agenda = () => {
       {isSingleDayView && (
         <Box display="flex" justifyContent="center" alignItems="center" mb={4}>
           <IconButton icon={<ChevronLeftIcon />} onClick={handlePreviousDay} aria-label="Previous Day" />
-          <Text mx={4} fontSize="xl">{days[currentDayIndex]}</Text>
+          <Text mx={4} fontSize="xl">{days[currentDayIndex]} {getDateForDay(currentDayIndex)}</Text>
           <IconButton icon={<ChevronRightIcon />} onClick={handleNextDay} aria-label="Next Day" />
         </Box>
       )}
@@ -210,7 +218,9 @@ const Agenda = () => {
       <Box width="70px" bg="tertiary" p={2} mr={2}></Box>
       {days.map((day, idx) => (
         <Box flex="1" bg="quinary" p={2} key={idx} mr={idx !== days.length - 1 ? 2 : 0} borderRadius="md">
-          <Text color="secondary" fontSize="xl">{day}</Text>
+          <Text color="secondary" fontSize="xl">
+          {day} {getDateForDay(idx)}
+          </Text>
         </Box>
       ))}
       </Box>
