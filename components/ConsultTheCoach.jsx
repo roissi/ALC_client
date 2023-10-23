@@ -194,7 +194,7 @@ const deleteSuggestionHandler = async (suggestionId) => {
         <option value="9">9am</option>
         <option value="10">10am</option>
         <option value="11">11am</option>
-        <option value="12">0pm</option>
+        <option value="12">12pm</option>
         <option value="13">1pm</option>
         <option value="14">2pm</option>
         <option value="15">3pm</option>
@@ -293,7 +293,7 @@ const deleteSuggestionHandler = async (suggestionId) => {
         <option value="9">9am</option>
         <option value="10">10am</option>
         <option value="11">11am</option>
-        <option value="12">0pm</option>
+        <option value="12">12pm</option>
         <option value="13">1pm</option>
         <option value="14">2pm</option>
         <option value="15">3pm</option>

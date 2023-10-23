@@ -75,21 +75,24 @@ const Agenda = () => {
   }, [isLoggedIn]);
 
   const DigitalClock = ({ hour }) => {
-    if (breakpoint === 'base') {
-      return (
-        <span style={{ fontFamily: 'Digital-7 Mono, monospace', fontSize: '1.2em' }}>
-          {hour < 12 ? `${hour}` : `${hour - 12}`}<br/>
-          {hour < 12 ? `AM` : `PM`}
-        </span>
-      );
-    } else {
-      return (
-        <span style={{ fontFamily: 'Digital-7 Mono, monospace', fontSize: '1.2em' }}>
-          {hour < 12 ? `${hour}:00 AM` : `${hour - 12}:00 PM`}
-        </span>
-      );
-    }
-  };
+    let displayHour = hour % 12 || 12;  // Si l'heure est 0 ou 12, elle sera affichée comme 12.
+    let period = hour < 12 ? 'AM' : 'PM';
+
+  if (breakpoint === 'base') {
+    return (
+      <span style={{ fontFamily: 'Digital-7 Mono, monospace', fontSize: '1.2em' }}>
+        {displayHour}<br/>
+        {period}
+      </span>
+    );
+  } else {
+    return (
+      <span style={{ fontFamily: 'Digital-7 Mono, monospace', fontSize: '1.2em' }}>
+        {displayHour}:00 {period}
+      </span>
+    );
+  }
+};
 
   const handleCellClick = (day, hour) => {
     setSelectedCell({ day, hour });
