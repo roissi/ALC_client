@@ -24,6 +24,22 @@ const Interests = () => {
     xl: "1fr 1fr"
   });
 
+  const flexDirection = useBreakpointValue({
+    base: "column",
+    sm: "row",
+    md: "row",
+    lg: "row",
+    xl: "row"
+});
+
+const justifyContentValue = useBreakpointValue({
+  base: "center",
+  sm: "flex-start",
+  md: "flex-start",
+  lg: "flex-start",
+  xl: "flex-start"
+});
+
   useEffect(() => {
     setIsEditable(isLoggedIn);
   }, [isLoggedIn]);
@@ -238,7 +254,7 @@ return (
 
       <Box bg="tertiary" color="white" m={4} p={4} borderRadius="10px">
         {choicesMade ? (
-          <Flex direction="row" justifyContent="flex-start">
+          <Flex direction={flexDirection} justifyContent={justifyContentValue}>
           <Button
             bg="quaternary"
             color="primary"
@@ -265,7 +281,8 @@ return (
             color="primary"
             _hover={{ bg: "quinary" }} 
             _active={{ bg: "quinary" }}
-            ml={4}
+            ml={flexDirection === "row" ? 4 : 0}
+            mt={flexDirection === "column" ? 4 : 0}
             onClick={async () => { await deleteUserInterests(userId); 
           setSelectedInterests([]);
           setSelectedNeedsMap({});
