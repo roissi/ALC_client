@@ -265,6 +265,7 @@ const Agenda = () => {
               agendaEntries={agendaEntries} 
               deleteEntry={deleteEntry} 
               isEditable={isEditable}
+              handleCellClick={handleCellClick}
             />
               )}
             </Box>

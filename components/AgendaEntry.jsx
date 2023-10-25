@@ -3,7 +3,7 @@ import { Textarea, Button, Tooltip, Flex, Image, useBreakpointValue } from '@cha
 import { useAuth } from './Layout';
 import { markSuggestionAsRemovedFromAgenda } from '../services/api';
 
-const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
+const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable, handleCellClick }) => {
   const entryKey = `${day}-${hour}`;
   const entry = agendaEntries[entryKey];
   const { onOpen } = useAuth();
@@ -24,6 +24,16 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
       }
     }
   }, [entry?.description]);
+
+  const handleAddClick = () => {
+    if (!isEditable) {
+      onOpen();
+      return;
+    }
+    // Ici, nous utilisons une fonction pour gérer le clic sur "Add entry"
+    // Elle définira la cellule sélectionnée, ce qui déclenchera l'affichage du formulaire
+    handleCellClick(day, hour);
+  };
 
   const handleDelete = async () => {
     if (!isEditable) {
@@ -114,7 +124,9 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
           boxShadow="none"
         />
       )}
-      <Button 
+      <>
+      {entry ? (
+        <Button 
         type="button"
         bg={isEditable ? "quaternary" : "senary"}
         color={isEditable ? "primary" : "primary"}
@@ -126,6 +138,21 @@ const AgendaEntry = ({ day, hour, agendaEntries, deleteEntry, isEditable }) => {
       >
         Delete
       </Button>
+      ) : (
+      <Button 
+        type="button"
+        bg={isEditable ? "quaternary" : "senary"}
+        color={isEditable ? "primary" : "primary"}
+        _hover={{ bg: isEditable ? "quinary" : "senary" }}
+        _active={{ bg: isEditable ? "quinary" : "senary" }}
+        size="sm"
+        mt={2}
+        onClick={handleAddClick}
+      >
+        Add entry
+      </Button>
+      )}
+      </>
     </>
   );
 };
