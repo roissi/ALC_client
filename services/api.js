@@ -69,32 +69,53 @@ export const login = async (userData) => {
 };
 
 // Fonctions liées à l'agenda
+export const addOrUpdateAgendaEntry = async (entryData) => {
+  if (!entryData.day || !entryData.hour) {
+    throw new Error('Day and hour are required');
+  }
+
+  if (entryData.id) {
+    return updateAgendaEntry(entryData);
+  } else {
+    return createAgendaEntry(entryData);
+  }
+};
+
 export const createAgendaEntry = async (entryData) => {
-  if (!entryData.day || !entryData.hour) throw new Error('Day and hour are required');
+  console.log("Sending the following entryData: ", entryData);
   return api.post('/api/agenda-entry', entryData, { headers: getAuthHeaders() })
+    .then(res => {
+      console.log("Success: ", res.data);
+      return res.data;
+    })
+    .catch(error => {
+      console.log("Error data: ", error.response.data);
+      handleApiError(error);
+    });
+};
+
+export const fetchAgendaEntries = async () => {
+  return api.get('/api/agenda-entry', { headers: getAuthHeaders() })
     .then(res => res.data)
     .catch(handleApiError);
 };
 
-export const fetchAgendaEntries = async () => api.get('/api/agenda-entry', { headers: getAuthHeaders() })
-  .then(res => res.data)
-  .catch(handleApiError);
-
-
 export const updateAgendaEntry = async (entryData) => {
-  if (!entryData.day || !entryData.hour || !entryData.id) {
-  throw new Error('Day, hour, and ID are required for updating');
-    }
+  if (!entryData.id) {
+    throw new Error('ID is required for updating');
+  }
   return api.put(`/api/agenda-entry/${entryData.id}`, entryData, { headers: getAuthHeaders() })
     .then(res => res.data)
     .catch(handleApiError);
 };
-  
-export const deleteAgendaEntry = async (id) => api.delete(`/api/agenda-entry/${id}`, { headers: getAuthHeaders() })
-  .then(res => res.data)
-  .catch(handleApiError);
 
-  export const fetchAllInterestsAndNeeds = async () => {
+export const deleteAgendaEntry = async (id) => {
+  return api.delete(`/api/agenda-entry/${id}`, { headers: getAuthHeaders() })
+    .then(res => res.data)
+    .catch(handleApiError);
+};
+
+export const fetchAllInterestsAndNeeds = async () => {
     console.log("Fetching all interests and needs...");
     return api.get('/api/interests', { headers: getAuthHeaders() })  // Utilisez getAuthHeaders ici
       .then(res => {
@@ -104,7 +125,7 @@ export const deleteAgendaEntry = async (id) => api.delete(`/api/agenda-entry/${i
       .catch(error => {
         handleApiError(error);
       });
-  };
+};
 
 export const saveUserInterests = async (interestData, selectedNeedsWithDuration) => {
   const payload = {

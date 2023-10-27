@@ -7,10 +7,6 @@ export const TOAST_MESSAGES = {
       title: 'WELCOME BACK',
       description: 'You are successfully connected to the application.'
     },
-    entry: {
-      title: 'CONGRATS',
-      description: 'Your first entry has been added successfully. You can continue to complete your diary'
-    },
     success: {
       title: 'SELECTION COMPLETED SUCCESSFULLY',
       description: 'Your choices have been recorded and are transmitted to the coach.'

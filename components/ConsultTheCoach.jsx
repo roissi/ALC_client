@@ -28,7 +28,6 @@ const ConsultTheCoach = () => {
     async function fetchAllSuggestions() {
       try {
         const suggestions = await getAllSuggestionsFromCoach(userId);
-        console.log("Récupérées de l'API :", suggestions);
         const newAddedToAgenda = {};
         suggestions.forEach((sug) => {
           newAddedToAgenda[sug.id] = sug.is_added_to_agenda;

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
-import AgendaForm from './AgendaForm';
 import AgendaEntry from './AgendaEntry';
-import { Box, Text, useToast, CloseButton, useBreakpointValue, IconButton } from "@chakra-ui/react";
+import { Box, Text, useToast, useBreakpointValue, IconButton } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { createAgendaEntry, fetchAgendaEntries, updateAgendaEntry, deleteAgendaEntry } from '../services/api';
+import { fetchAgendaEntries } from '../services/api';
 import { useAuth } from './Layout';
 import { TOAST_MESSAGES } from './toastMessages';
 
@@ -41,18 +40,14 @@ const Agenda = () => {
   };
 
   useEffect(() => {
-    setIsEditable(isLoggedIn);
-  }, [isLoggedIn]);
-
-  useEffect(() => {
     const initAgenda = async () => {
       const token = localStorage.getItem('jwtToken');
-      
+  
       if (token) {
         try {
           const decoded = jwt_decode(token);
           const currentTime = Date.now() / 1000;
-          
+  
           if (decoded.exp < currentTime) {
             localStorage.removeItem('jwtToken');
           } else {
@@ -66,7 +61,9 @@ const Agenda = () => {
         setAgendaEntries({});
       }
     };
-
+  
+    setIsEditable(isLoggedIn);
+  
     if (isLoggedIn) {
       refreshAgendaEntries();
     } else {
@@ -75,7 +72,7 @@ const Agenda = () => {
   }, [isLoggedIn]);
 
   const DigitalClock = ({ hour }) => {
-    let displayHour = hour % 12 || 12;  // Si l'heure est 0 ou 12, elle sera affichée comme 12.
+    let displayHour = hour % 12 || 12;
     let period = hour < 12 ? 'AM' : 'PM';
 
   if (breakpoint === 'base') {
@@ -115,94 +112,13 @@ const Agenda = () => {
     }
   };
 
-  const addAgendaEntry = async (day, hour, entry, token) => {
-    const newEntry = {
-      title: entry.title,
-      description: entry.description,
-      day,
-      hour
-    };
-    try {
-      await createAgendaEntry(newEntry, token);
-      refreshAgendaEntries();
-      if (!firstEntryAdded) {
-        toast({
-          duration: 6000,
-          position: "top-right",
-          isClosable: true,
-          render: ({ onClose }) => (
-            <Box color="primary" p={3} bg="quaternary" borderRadius="md">
-              <Text color="primary" fontSize="xl">{TOAST_MESSAGES.entry.title}</Text>
-              <Text color="primary" fontSize="lg">{TOAST_MESSAGES.entry.description}</Text>
-              <CloseButton onClick={onClose} />
-            </Box>
-          ),
-        });
-        setFirstEntryAdded(true);
-      }
-  
-    } catch (error) {
-      console.error("Could not add entry:", error);
-      toast({
-        duration: 6000,
-        position: "top-right",
-        isClosable: true,
-        render: ({ onClose }) => (
-          <Box color="primary" p={3} bg="error" borderRadius="md">
-            <Text color="primary" fontSize="xl">{TOAST_MESSAGES.problemAgenda.title}</Text>
-            <Text color="primary" fontSize="lg">{TOAST_MESSAGES.problemAgenda.description}</Text>
-            <CloseButton onClick={onClose} />
-          </Box>
-        )
-      });
-    }
-  };
-  
-  const updateAgendaEntries = async (day, hour, newEntry, id, token) => {
-    const updatedEntry = {
-      day,
-      hour,
-      title: newEntry.title,
-      description: newEntry.description,
-      id
-    };
-  
-    try {
-      await updateAgendaEntry(updatedEntry, token);
-      setAgendaEntries(prevState => ({
-        ...prevState,
-        [`${day}-${hour}`]: updatedEntry
-      }));
-    } catch (error) {
-      console.error("Could not update entry:", error);
-    }
-  };
-
-  
   const handleAgendaEntry = async (day, hour, entry) => {
     const token = localStorage.getItem('jwtToken');
     if (token) {
       const entryKey = `${day}-${hour}`;
       if (agendaEntries.hasOwnProperty(entryKey)) {
         const id = agendaEntries[entryKey].id;
-        await updateAgendaEntries(day, hour, entry, id, token);
-      } else {
-        await addAgendaEntry(day, hour, entry, token);
-      }
-    }
-  };
-
-  const deleteEntry = async (day, hour) => {
-    const token = localStorage.getItem('jwtToken');
-    const entryKey = `${day}-${hour}`;
-    const entryId = agendaEntries[entryKey]?.id;
-
-    if (token && entryId !== undefined) {
-      try {
-        await deleteAgendaEntry(entryId, token);
-        refreshAgendaEntries();
-      } catch (error) {
-        console.error("Could not delete entry:", error);
+        await addOrUpdateAgendaEntry(day, hour, entry, id, token);
       }
     }
   };
@@ -251,29 +167,19 @@ const Agenda = () => {
               minHeight="120px"
               onClick={() => handleCellClick(day, hour)}
             >
-            {selectedCell && selectedCell.day === day && selectedCell.hour === hour ? (
-            <AgendaForm 
-              day={selectedCell.day} 
-              hour={selectedCell.hour} 
-              onEntryCreated={(newEntry) => handleAgendaEntry(newEntry.day, newEntry.hour, newEntry)}
-              isEditable={isEditable}
-            />
-          ) : (
             <AgendaEntry 
               day={day} 
               hour={hour}
               agendaEntries={agendaEntries} 
-              deleteEntry={deleteEntry} 
               isEditable={isEditable}
-              handleCellClick={handleCellClick}
-            />
-              )}
-            </Box>
-              )
-            ))}
-          </Box>
-        ))}
-      </Box>
+              refreshAgendaEntries={refreshAgendaEntries}
+              />
+              </Box>
+            )
+          ))}
+        </Box>
+      ))}
+    </Box>
   );
 };
 
