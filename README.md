@@ -1,4 +1,5 @@
 # ALC_server
+
 Artificial life coach (front-end)
 
 Visit [https://artificial-life-coach.vercel.app](https://artificial-life-coach.vercel.app)
@@ -7,13 +8,13 @@ Artificial Life Coach is an application that aims to offer its users an artifici
 
 ### Contents
 
-- [ALC\_server](#alc_server)
-    - [Contents](#contents)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Use](#use)
-    - [Contribution](#contribution)
-    - [Licence](#licence)
+- [ALC_server](#alc_server)
+  - [Contents](#contents)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Use](#use)
+  - [Contribution](#contribution)
+  - [Licence](#licence)
   - [Support this project](#support-this-project)
 
 ### Prerequisites
@@ -27,15 +28,19 @@ Artificial Life Coach is an application that aims to offer its users an artifici
 1. **Clone this repository** :
    ```bash
    git clone https://github.com/votre_nom_utilisateur/ALC_client.git
+   ```
 2. **Go to the project folder** :
    ```bash
    cd ALC_client
+   ```
 3. **Install dependencies** :
    ```bash
    npm install
+   ```
 4. **Start the server** :
    ```bash
    npm start
+   ```
 
 ### Use
 
@@ -59,10 +64,12 @@ For more information about the MIT License, please see [Open Source Initiative](
 
 For any other questions or clarifications, do not hesitate to open a ticket or [contact me](mailto:cyrildegraeve@gmail.com).
 
----------------------------------------
+---
+
 Cf. [Artificial life coach (back-end)](https://github.com/roissi/ALC_server)
 
----------------------------------------
+---
+
 ## Support this project
 
 If you find this project useful or interesting, please give it a star ⭐! This would greatly help to raise awareness within the community. Thank you for your support !

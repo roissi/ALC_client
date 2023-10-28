@@ -1,10 +1,10 @@
 import * as React from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../themes/theme";
-import Layout from '../components/Layout';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faComments } from '@fortawesome/free-solid-svg-icons';
-import Head from 'next/head';
+import Layout from "../components/Layout";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faComments } from "@fortawesome/free-solid-svg-icons";
+import Head from "next/head";
 
 library.add(faComments);
 

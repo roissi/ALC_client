@@ -1,8 +1,25 @@
 import React, { useState } from "react";
 import { login } from "../services/api";
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Text, useDisclosure, useToast, Box, CloseButton } from "@chakra-ui/react";
-import { useAuth } from './Layout';
-import { TOAST_MESSAGES } from './toastMessages';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+  useDisclosure,
+  useToast,
+  Box,
+  CloseButton,
+} from "@chakra-ui/react";
+import { useAuth } from "./Layout";
+import { TOAST_MESSAGES } from "./toastMessages";
 
 export default function LoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -18,7 +35,7 @@ export default function LoginModal() {
       setErrorMessage("Les champs ne peuvent pas être vides.");
       return;
     }
-    
+
     const userData = { username, password };
     try {
       const response = await login(userData);
@@ -32,8 +49,12 @@ export default function LoginModal() {
           isClosable: true,
           render: ({ onClose }) => (
             <Box color="primary" p={3} bg="quaternary" borderRadius="md">
-              <Text color="primary" fontSize="xl">{TOAST_MESSAGES.login.title}</Text>
-              <Text color="primary" fontSize="lg">{TOAST_MESSAGES.login.description}</Text>
+              <Text color="primary" fontSize="xl">
+                {TOAST_MESSAGES.login.title}
+              </Text>
+              <Text color="primary" fontSize="lg">
+                {TOAST_MESSAGES.login.description}
+              </Text>
               <CloseButton onClick={onClose} />
             </Box>
           ),
@@ -48,10 +69,10 @@ export default function LoginModal() {
 
   return (
     <>
-      <Button 
-        bg="quaternary" 
-        color="tertiary" 
-        _hover={{ bg: "quinary" }} 
+      <Button
+        bg="quaternary"
+        color="tertiary"
+        _hover={{ bg: "quinary" }}
         _active={{ bg: "quinary" }}
         onClick={onOpen}
       >
@@ -72,7 +93,11 @@ export default function LoginModal() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 variant="filled"
-                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
+                _focus={{
+                  borderColor: "gray.600",
+                  bgColor: "gray.100",
+                  boxShadow: "none",
+                }}
               />
             </FormControl>
 
@@ -83,16 +108,20 @@ export default function LoginModal() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 variant="filled"
-                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
+                _focus={{
+                  borderColor: "gray.600",
+                  bgColor: "gray.100",
+                  boxShadow: "none",
+                }}
               />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button 
-              bg="quaternary" 
-              color="tertiary" 
-              _hover={{ bg: "quinary" }} 
+            <Button
+              bg="quaternary"
+              color="tertiary"
+              _hover={{ bg: "quinary" }}
               _active={{ bg: "quinary" }}
               onClick={handleSubmit}
             >

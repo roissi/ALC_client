@@ -10,7 +10,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@chakra-ui/icons": "2.1.1",
@@ -46,5 +47,8 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/roissi/ALC_client/issues"
+  },
+  "devDependencies": {
+    "prettier": "3.0.3"
   }
 }

@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 
 const gradientAnimationVariants = {
   animate: {
-    backgroundPosition: ["0% 50%", "200% 50%", "0% 50%"], 
+    backgroundPosition: ["0% 50%", "200% 50%", "0% 50%"],
     transition: {
       duration: 5,
       repeat: Infinity,
       ease: "linear",
-      times: [0, 0.5, 1]
-    }
-  }
+      times: [0, 0.5, 1],
+    },
+  },
 };
 
 const AnimatedGradientBox = motion(Box);
