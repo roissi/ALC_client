@@ -37,6 +37,10 @@ export const TOAST_MESSAGES = {
       title: 'OUPS, BAD ISSUE',
       description: 'An error occurred while adding the entry. Try Again.'
     },
+    problemDelete: {
+      title: 'OUPS, BAD ISSUE',
+      description: 'An error occurred while deleting the entry. Try Again.'
+    },
     SugAddedError: {
       title: 'OUPS, BAD ISSUE',
       description: 'Error adding to calendar.'
