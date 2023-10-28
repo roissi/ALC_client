@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Textarea, Tooltip, Flex, Image, Button, useBreakpointValue } from '@chakra-ui/react';
+import { Textarea, Tooltip, Flex, Image, Button } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useAuth } from './Layout';
 import { addOrUpdateAgendaEntry, deleteAgendaEntry } from '../services/api';
@@ -13,8 +13,6 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
   const descriptionRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
-  const flexDirection = useBreakpointValue({ base: "column", md: "row" });
-  const alignItems = useBreakpointValue({ base: "flex-start", md: "center" });
 
   const [title, setTitle] = useState(entry?.title || '');
   const [description, setDescription] = useState(entry?.description || '');
@@ -85,8 +83,8 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
   return (
     <>
       {entry?.title === 'COACH SUGGESTION' ? (
-        <Flex direction={flexDirection} alignItems={alignItems}>
-          <Image src="/img/brain_light.png" alt="Brain" boxSize="30px" ml={0} mr={-2} />
+        <Flex alignItems="center">
+          <Image src="/img/brain_light.png" alt="Brain" h="30px" ml={0} mr={-2} />
           <Textarea
             value='FROM COACH'
             readOnly={true}
@@ -111,7 +109,7 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
             border="none"
             outline="none"
             rows="1"
-            ml={2}
+            ml={3}
             focusBorderColor="#15b9fe"
             placeholder={title ? '' : 'Title'}
             sx={{
@@ -160,7 +158,7 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
         {description && (
           <Flex position="absolute" bottom={0} left={0} zIndex={1}>
             <DeleteIcon 
-              color="quaternary"
+              color="quinary"
               h="15px" 
               w="15px" 
               cursor="pointer" 
