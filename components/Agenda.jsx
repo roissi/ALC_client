@@ -5,10 +5,8 @@ import { Box, Text, useToast, useBreakpointValue, IconButton } from "@chakra-ui/
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { fetchAgendaEntries } from '../services/api';
 import { useAuth } from './Layout';
-import { TOAST_MESSAGES } from './toastMessages';
 
 const Agenda = () => {
-  const toast = useToast();
   const { isLoggedIn } = useAuth();
   const [isEditable, setIsEditable] = useState(isLoggedIn);
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -21,7 +19,6 @@ const Agenda = () => {
 
   const [selectedCell, setSelectedCell] = useState(null);
   const [agendaEntries, setAgendaEntries] = useState({});
-  const [firstEntryAdded, setFirstEntryAdded] = useState(false);
 
   const getDateForDay = (dayIndex) => {
     const currentDate = new Date();

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Select, Box, Grid, Textarea, Button, Spinner, Text, useToast, CloseButton, Image } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
 import { getSuggestionFromCoach, addToAgenda, getAllSuggestionsFromCoach, markSuggestionAsAddedToAgenda, deleteSuggestion } from '../services/api';
 import { useAuth } from './Layout';
 import { TOAST_MESSAGES } from './toastMessages';
@@ -301,38 +302,33 @@ const deleteSuggestionHandler = async (suggestionId) => {
         <option value="18">6pm</option>
         <option value="19">7pm</option>
         </Select>
-        <Button
-        type="button"
-        bg="quaternary"
-        color="primary"
-        _hover={{ bg:"quinary"}}
-        _active={{ bg:"quinary"}}
-        size="sm"
-        onClick={() => addToAgendaHandler(suggestion.id)}
-      >
-        Add suggestion
-      </Button>
-    </>
-  )}
-  </Box>
-  <Button
-    type="button"
-    bg="quaternary"
-    color="primary"
-    _hover={{ bg:"quinary"}}
-    _active={{ bg:"quinary"}}
-    size="sm"
-    ml={2}
-    onClick={() => deleteSuggestionHandler(suggestion.id)}
-  >
-    Delete
-  </Button>
-  </Box>
-</Box>
+          <Button
+            type="button"
+            bg="quaternary"
+            color="primary"
+            _hover={{ bg:"quinary"}}
+            _active={{ bg:"quinary"}}
+            size="sm"
+            onClick={() => addToAgendaHandler(suggestion.id)}
+          >
+            Add suggestion
+          </Button>
+      </>
+      )}
       </Box>
+          <DeleteIcon 
+            color="quinary"
+            h="30px" 
+            w="30px" 
+            cursor="pointer" 
+            onClick={() => deleteSuggestionHandler(suggestion.id)}
+          />
+      </Box>
+    </Box>
+    </Box>
     ))}
   </Grid>
-)}
+  )}
   </Box>
   )
 };
