@@ -1,7 +1,25 @@
 import React, { useState } from "react";
 import { signUp } from "../services/api";
-import { Avatar, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Text, useDisclosure, useToast, Box, CloseButton } from "@chakra-ui/react";
-import { TOAST_MESSAGES } from './toastMessages';
+import {
+  Avatar,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+  useDisclosure,
+  useToast,
+  Box,
+  CloseButton,
+} from "@chakra-ui/react";
+import { TOAST_MESSAGES } from "./toastMessages";
 
 export default function SignUpModal({ setIsLoggedIn, setUserId }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,8 +51,12 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
           isClosable: true,
           render: ({ onClose }) => (
             <Box color="primary" p={3} bg="quaternary" borderRadius="md">
-              <Text color="primary" fontSize="xl">{TOAST_MESSAGES.signup.title}</Text>
-              <Text color="primary" fontSize="lg">{TOAST_MESSAGES.signup.description}</Text>
+              <Text color="primary" fontSize="xl">
+                {TOAST_MESSAGES.signup.title}
+              </Text>
+              <Text color="primary" fontSize="lg">
+                {TOAST_MESSAGES.signup.description}
+              </Text>
               <CloseButton onClick={onClose} />
             </Box>
           ),
@@ -50,22 +72,26 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
       }
     }
   };
-  
-    return (
+
+  return (
     <>
       {isConnected ? (
         <div style={{ display: "flex", alignItems: "center" }}>
           <Avatar name={username} src="url_de_l_avatar" />
-          <Button colorScheme="red" ml={3} onClick={() => setIsConnected(false)}>
+          <Button
+            colorScheme="red"
+            ml={3}
+            onClick={() => setIsConnected(false)}
+          >
             Logout
           </Button>
         </div>
       ) : (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Button 
-            bg="secondary" 
-            color="tertiary" 
-            _hover={{ bg: "quinary" }} 
+          <Button
+            bg="secondary"
+            color="tertiary"
+            _hover={{ bg: "quinary" }}
             _active={{ bg: "quinary" }}
             onClick={onOpen}
           >
@@ -88,7 +114,11 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 variant="filled"
-                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
+                _focus={{
+                  borderColor: "gray.600",
+                  bgColor: "gray.100",
+                  boxShadow: "none",
+                }}
               />
             </FormControl>
 
@@ -99,7 +129,11 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 variant="filled"
-                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
+                _focus={{
+                  borderColor: "gray.600",
+                  bgColor: "gray.100",
+                  boxShadow: "none",
+                }}
               />
             </FormControl>
 
@@ -110,16 +144,20 @@ export default function SignUpModal({ setIsLoggedIn, setUserId }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 variant="filled"
-                _focus={{ borderColor: "gray.600", bgColor: "gray.100", boxShadow: "none" }}
+                _focus={{
+                  borderColor: "gray.600",
+                  bgColor: "gray.100",
+                  boxShadow: "none",
+                }}
               />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-          <Button 
-              bg="secondary" 
-              color="tertiary" 
-              _hover={{ bg: "quinary" }} 
+            <Button
+              bg="secondary"
+              color="tertiary"
+              _hover={{ bg: "quinary" }}
               _active={{ bg: "quinary" }}
               onClick={handleSubmit}
             >

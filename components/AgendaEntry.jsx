@@ -1,11 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Textarea, Tooltip, Flex, Image, Button } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
-import { useAuth } from './Layout';
-import { addOrUpdateAgendaEntry, deleteAgendaEntry } from '../services/api';
-import { TOAST_MESSAGES } from './toastMessages';
+import React, { useState, useEffect, useRef } from "react";
+import { Textarea, Tooltip, Flex, Image, Button } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { useAuth } from "./Layout";
+import { addOrUpdateAgendaEntry, deleteAgendaEntry } from "../services/api";
+import { TOAST_MESSAGES } from "./toastMessages";
 
-const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntries }) => {
+const AgendaEntry = ({
+  day,
+  hour,
+  agendaEntries,
+  isEditable,
+  refreshAgendaEntries,
+}) => {
   const entryKey = `${day}-${hour}`;
   const entry = agendaEntries[entryKey];
   const { onOpen } = useAuth();
@@ -14,8 +20,8 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const [title, setTitle] = useState(entry?.title || '');
-  const [description, setDescription] = useState(entry?.description || '');
+  const [title, setTitle] = useState(entry?.title || "");
+  const [description, setDescription] = useState(entry?.description || "");
 
   const showToast = (title, description, onClose) => {
     toast({
@@ -24,18 +30,22 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
       isClosable: true,
       render: () => (
         <Box color="primary" p={3} bg="error" borderRadius="md">
-          <Text color="primary" fontSize="xl">{title}</Text>
-          <Text color="primary" fontSize="lg">{description}</Text>
+          <Text color="primary" fontSize="xl">
+            {title}
+          </Text>
+          <Text color="primary" fontSize="lg">
+            {description}
+          </Text>
           <CloseButton onClick={onClose} />
         </Box>
-      )
+      ),
     });
   };
 
   useEffect(() => {
     if (entry) {
-      setTitle(entry.title || '');
-      setDescription(entry.description || '');
+      setTitle(entry.title || "");
+      setDescription(entry.description || "");
     }
   }, [entry]);
 
@@ -49,12 +59,12 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
   const handleBlur = async () => {
     try {
       if (title && description && isEditable) {
-        const entryData = { 
+        const entryData = {
           id: entry?.id,
-          day, 
-          hour, 
-          title, 
-          description 
+          day,
+          hour,
+          title,
+          description,
         };
         await addOrUpdateAgendaEntry(entryData);
         refreshAgendaEntries();
@@ -62,34 +72,52 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
         onOpen();
       }
     } catch (error) {
-      console.error("Une erreur est survenue lors de la mise à jour de l'entrée de l'agenda :", error);
-      showToast(TOAST_MESSAGES.problemAgenda.title, TOAST_MESSAGES.problemAgenda.description);
+      console.error(
+        "Une erreur est survenue lors de la mise à jour de l'entrée de l'agenda :",
+        error,
+      );
+      showToast(
+        TOAST_MESSAGES.problemAgenda.title,
+        TOAST_MESSAGES.problemAgenda.description,
+      );
     }
   };
 
   const handleDelete = async () => {
     try {
-      setTitle('');
-      setDescription('');
-  
+      setTitle("");
+      setDescription("");
+
       await deleteAgendaEntry(entry?.id);
       refreshAgendaEntries();
     } catch (error) {
-      console.error("Une erreur est survenue lors de la suppression de l'entrée de l'agenda:", error);
-      showToast(TOAST_MESSAGES.problemDelete.title, TOAST_MESSAGES.problemDelete.description);
+      console.error(
+        "Une erreur est survenue lors de la suppression de l'entrée de l'agenda:",
+        error,
+      );
+      showToast(
+        TOAST_MESSAGES.problemDelete.title,
+        TOAST_MESSAGES.problemDelete.description,
+      );
     }
   };
 
   return (
     <>
-      {entry?.title === 'COACH SUGGESTION' ? (
+      {entry?.title === "COACH SUGGESTION" ? (
         <Flex alignItems="center">
-          <Image src="/img/brain_light.png" alt="Brain" h="30px" ml={0} mr={-2} />
+          <Image
+            src="/img/brain_light.png"
+            alt="Brain"
+            h="30px"
+            ml={0}
+            mr={-2}
+          />
           <Textarea
-            value='FROM COACH'
+            value="FROM COACH"
             readOnly={true}
             size="md"
-            color='secondary'
+            color="secondary"
             fontWeight="bold"
             resize="none"
             rows="1"
@@ -101,7 +129,14 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
         </Flex>
       ) : (
         <Flex alignItems="center">
-          <Image src="/img/calendar_light.png" alt="Calendar" h="30px" objectFit="cover" ml={0} mr={-3} />
+          <Image
+            src="/img/calendar_light.png"
+            alt="Calendar"
+            h="30px"
+            objectFit="cover"
+            ml={0}
+            mr={-3}
+          />
           <Textarea
             value={title}
             onBlur={handleBlur}
@@ -111,28 +146,28 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
             rows="1"
             ml={3}
             focusBorderColor="#15b9fe"
-            placeholder={title ? '' : 'Title'}
+            placeholder={title ? "" : "Title"}
             sx={{
               "::placeholder": {
-              color: "quinary",
-              fontSize: "1em"
-              }
+                color: "quinary",
+                fontSize: "1em",
+              },
             }}
             style={{ fontWeight: title ? "bold" : "normal" }}
             isDisabled={!isEditable}
           />
         </Flex>
       )}
-  
-        <Flex flexDirection="column" position="relative">
-          <Tooltip
-            asArrow
-            label={description}
-            bg='tertiary'
-            color="secondary"
-            placement="auto-start"
-            isOpen={isOverflowing && showTooltip}
-          >
+
+      <Flex flexDirection="column" position="relative">
+        <Tooltip
+          asArrow
+          label={description}
+          bg="tertiary"
+          color="secondary"
+          placement="auto-start"
+          isOpen={isOverflowing && showTooltip}
+        >
           <Textarea
             ref={descriptionRef}
             value={description}
@@ -142,33 +177,33 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
             outline="none"
             rows="6"
             focusBorderColor="#15b9fe"
-            placeholder={description ? '' : 'Description'}
+            placeholder={description ? "" : "Description"}
             sx={{
               "::placeholder": {
-              color: "quinary",
-              fontSize: "1em"
-              }
+                color: "quinary",
+                fontSize: "1em",
+              },
             }}
             isDisabled={!isEditable}
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
           />
-          </Tooltip>
-  
+        </Tooltip>
+
         {description && (
           <Flex position="absolute" bottom={0} left={0} zIndex={1}>
-            <DeleteIcon 
+            <DeleteIcon
               color="quinary"
-              h="15px" 
-              w="15px" 
-              cursor="pointer" 
+              h="15px"
+              w="15px"
+              cursor="pointer"
               onClick={handleDelete}
             />
           </Flex>
-          )}
-        </Flex>
+        )}
+      </Flex>
 
-      { !isEditable && (
+      {!isEditable && (
         <Button
           type="submit"
           bg="senary"
@@ -182,7 +217,7 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
           Add entry
         </Button>
       )}
-  
+
       {entry?.suggestion_text && (
         <Textarea
           value={entry?.suggestion_text}
@@ -192,10 +227,10 @@ const AgendaEntry = ({ day, hour, agendaEntries, isEditable, refreshAgendaEntrie
           border="none"
           outline="none"
           boxShadow="none"
-          />
-          )}
-        </>
-      );
-    }
-    
-    export default AgendaEntry;
+        />
+      )}
+    </>
+  );
+};
+
+export default AgendaEntry;
