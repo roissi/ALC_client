@@ -15,13 +15,13 @@ const Agenda = () => {
   const { isLoggedIn } = useAuth();
   const [isEditable, setIsEditable] = useState(isLoggedIn);
   const days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun",
   ];
   const hours = Array.from({ length: 12 }, (_, i) => i + 8);
   const breakpoint = useBreakpointValue({
@@ -59,7 +59,8 @@ const Agenda = () => {
     const targetDate = new Date(
       currentDate.setDate(currentDate.getDate() + difference),
     );
-    return `${targetDate.getDate()}`;
+    const month = targetDate.getMonth() + 1;
+    return `${targetDate.getDate()}/${month}`;
   };
 
   const handlePreviousDay = () => {
