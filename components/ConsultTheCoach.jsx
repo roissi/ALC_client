@@ -213,13 +213,13 @@ const ConsultTheCoach = () => {
             <option value="" disabled>
               Choose a day
             </option>
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-            <option value="Friday">Friday</option>
-            <option value="Saturday">Saturday</option>
-            <option value="Sunday">Sunday</option>
+            <option value="Mon">Monday</option>
+            <option value="Tue">Tuesday</option>
+            <option value="Wed">Wednesday</option>
+            <option value="Thu">Thursday</option>
+            <option value="Fri">Friday</option>
+            <option value="Sat">Saturday</option>
+            <option value="Sun">Sunday</option>
           </Select>
           <Select
             bg="tertiary"
@@ -340,13 +340,13 @@ const ConsultTheCoach = () => {
                           <option value="" disabled>
                             Choose a day
                           </option>
-                          <option value="Monday">Monday</option>
-                          <option value="Tuesday">Tuesday</option>
-                          <option value="Wednesday">Wednesday</option>
-                          <option value="Thursday">Thursday</option>
-                          <option value="Friday">Friday</option>
-                          <option value="Saturday">Saturday</option>
-                          <option value="Sunday">Sunday</option>
+                          <option value="Mon">Monday</option>
+                          <option value="Tue">Tuesday</option>
+                          <option value="Wed">Wednesday</option>
+                          <option value="Thu">Thursday</option>
+                          <option value="Fri">Friday</option>
+                          <option value="Sat">Saturday</option>
+                          <option value="Sun">Sunday</option>
                         </Select>
                         <Select
                           bg="tertiary"
