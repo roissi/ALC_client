@@ -12,12 +12,15 @@ import {
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Text,
   useDisclosure,
   useToast,
   Box,
   CloseButton,
 } from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useAuth } from "./Layout";
 import { TOAST_MESSAGES } from "./toastMessages";
 
@@ -29,6 +32,10 @@ export default function LoginModal() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const toast = useToast();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleSubmit = async () => {
     if (username === "" || password === "") {
@@ -103,17 +110,24 @@ export default function LoginModal() {
 
             <FormControl mt={4} id="password">
               <FormLabel>Password</FormLabel>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                variant="filled"
-                _focus={{
-                  borderColor: "gray.600",
-                  bgColor: "gray.100",
-                  boxShadow: "none",
-                }}
-              />
+              <InputGroup>
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  variant="filled"
+                  _focus={{
+                    borderColor: "gray.600",
+                    bgColor: "gray.100",
+                    boxShadow: "none",
+                  }}
+                />
+                <InputRightElement width="4.5rem">
+            <Button h="1.75rem" size="sm" onClick={handlePasswordVisibility}>
+              {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
             </FormControl>
           </ModalBody>
 
