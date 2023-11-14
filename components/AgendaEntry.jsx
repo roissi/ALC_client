@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Textarea, Tooltip, Flex, Image, Button } from "@chakra-ui/react";
+import {
+  Textarea,
+  Tooltip,
+  Flex,
+  Image,
+  Button,
+  useToast,
+  Box,
+  Text,
+  CloseButton,
+} from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useAuth } from "./Layout";
 import { addOrUpdateAgendaEntry, deleteAgendaEntry } from "../services/api";
@@ -23,24 +33,7 @@ const AgendaEntry = ({
   const [title, setTitle] = useState(entry?.title || "");
   const [description, setDescription] = useState(entry?.description || "");
 
-  const showToast = (title, description, onClose) => {
-    toast({
-      duration: 6000,
-      position: "top-right",
-      isClosable: true,
-      render: () => (
-        <Box color="primary" p={3} bg="error" borderRadius="md">
-          <Text color="primary" fontSize="xl">
-            {title}
-          </Text>
-          <Text color="primary" fontSize="lg">
-            {description}
-          </Text>
-          <CloseButton onClick={onClose} />
-        </Box>
-      ),
-    });
-  };
+  const toast = useToast();
 
   useEffect(() => {
     if (entry) {
@@ -76,10 +69,22 @@ const AgendaEntry = ({
         "Une erreur est survenue lors de la mise à jour de l'entrée de l'agenda :",
         error,
       );
-      showToast(
-        TOAST_MESSAGES.problemAgenda.title,
-        TOAST_MESSAGES.problemAgenda.description,
-      );
+      toast({
+        duration: 6000,
+        position: "top-right",
+        isClosable: true,
+        render: ({ onClose }) => (
+          <Box color="primary" p={3} bg="error" borderRadius="md">
+            <Text color="primary" fontSize="xl">
+              {TOAST_MESSAGES.problemAgenda.title}
+            </Text>
+            <Text color="primary" fontSize="lg">
+              {TOAST_MESSAGES.problemAgenda.description}
+            </Text>
+            <CloseButton onClick={onClose} />
+          </Box>
+        ),
+      });
     }
   };
 
@@ -95,10 +100,22 @@ const AgendaEntry = ({
         "Une erreur est survenue lors de la suppression de l'entrée de l'agenda:",
         error,
       );
-      showToast(
-        TOAST_MESSAGES.problemDelete.title,
-        TOAST_MESSAGES.problemDelete.description,
-      );
+      toast({
+        duration: 6000,
+        position: "top-right",
+        isClosable: true,
+        render: ({ onClose }) => (
+          <Box color="primary" p={3} bg="error" borderRadius="md">
+            <Text color="primary" fontSize="xl">
+              {TOAST_MESSAGES.problemDelete.title}
+            </Text>
+            <Text color="primary" fontSize="lg">
+              {TOAST_MESSAGES.problemDelete.description}
+            </Text>
+            <CloseButton onClick={onClose} />
+          </Box>
+        ),
+      });
     }
   };
 

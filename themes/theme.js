@@ -21,7 +21,7 @@ const theme = extendTheme({
     quinary: "#bbd5ec",
     senary: "#a0aec0",
     white: "#ffffff",
-    error: "red.500",
+    error: "#b50d0d",
   },
   components: {
     Box: {

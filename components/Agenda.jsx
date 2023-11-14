@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import AgendaEntry from "./AgendaEntry";
-import {
-  Box,
-  Text,
-  useBreakpointValue,
-  IconButton,
-} from "@chakra-ui/react";
+import { Box, Text, useBreakpointValue, IconButton } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { fetchAgendaEntries } from "../services/api";
 import { useAuth } from "./Layout";
@@ -14,16 +9,8 @@ import { useAuth } from "./Layout";
 const Agenda = () => {
   const { isLoggedIn } = useAuth();
   const [isEditable, setIsEditable] = useState(isLoggedIn);
-  const days = [
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat",
-    "Sun",
-  ];
-  const hours = Array.from({ length: 12 }, (_, i) => i + 8);
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const hours = Array.from({ length: 24 }, (_, i) => i);
   const breakpoint = useBreakpointValue({
     base: "base",
     sm: "sm",
@@ -104,8 +91,19 @@ const Agenda = () => {
   }, [isLoggedIn]);
 
   const DigitalClock = ({ hour }) => {
-    let displayHour = hour % 12 || 12;
+    let displayHour;
     let period = hour < 12 ? "AM" : "PM";
+
+    if (hour === 0) {
+      // Minuit est traité comme "12 AM"
+      displayHour = "12";
+    } else if (hour <= 12) {
+      // Heures de 1 à 12 (midi inclus)
+      displayHour = `${hour % 12 === 0 ? 12 : hour % 12}`;
+    } else {
+      // Heures de l'après-midi (13 à 23)
+      displayHour = `${hour % 12}`;
+    }
 
     if (breakpoint === "base") {
       return (
@@ -129,7 +127,7 @@ const Agenda = () => {
   };
 
   const handleCellClick = (day, hour) => {
-    setSelectedCell({ day, hour });
+    setSelectedCell({ day, hour: hour === 0 ? 0 : hour });
   };
 
   const refreshAgendaEntries = async () => {
