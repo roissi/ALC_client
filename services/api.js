@@ -72,7 +72,8 @@ export const login = async (userData) => {
 
 // Fonctions liées à l'agenda
 export const addOrUpdateAgendaEntry = async (entryData) => {
-  if (!entryData.day || !entryData.hour) {
+  console.log("addOrUpdate : Sending the following entryData: ", entryData);
+  if (!entryData.day || entryData.hour === undefined) {
     throw new Error("Day and hour are required");
   }
 
@@ -84,7 +85,7 @@ export const addOrUpdateAgendaEntry = async (entryData) => {
 };
 
 export const createAgendaEntry = async (entryData) => {
-  console.log("Sending the following entryData: ", entryData);
+  console.log("create : Sending the following entryData: ", entryData);
   return api
     .post("/api/agenda-entry", entryData, { headers: getAuthHeaders() })
     .then((res) => {

@@ -123,11 +123,15 @@ export default function LoginModal() {
                   }}
                 />
                 <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handlePasswordVisibility}>
-              {showPassword ? <ViewOffIcon /> : <ViewIcon />}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
+                  <Button
+                    h="1.75rem"
+                    size="sm"
+                    onClick={handlePasswordVisibility}
+                  >
+                    {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
           </ModalBody>
 
